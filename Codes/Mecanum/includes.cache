@@ -1,0 +1,17 @@
+[
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\enzo\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.14\\cores\\esp32"
+  },
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\enzo\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.14\\variants\\esp32da"
+  },
+  {
+    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\2B3EAE88FC51D69E6BCAADEB93B4641A\\sketch\\Mecanum.ino.cpp",
+    "Include": "",
+    "Includepath": null
+  }
+]
