@@ -79,7 +79,7 @@ def close_dashboard():
     tae.async_execute(quit_tk(), wait=True, pop_up=True, callback=None, master=root)
 
 
-async def uploadarara_cmd():
+async def upload_to_arara():
     global code
     if valor.__eq__("ArcadeDrive"):
         code = paths.returnpath("ArcadeDrive")
@@ -93,7 +93,7 @@ async def uploadarara_cmd():
 
 
 def upload_handler():
-    tae.async_execute(uploadarara_cmd(), wait=True, pop_up=True, callback=None, master=root)
+    tae.async_execute(upload_to_arara(), wait=True, pop_up=True, callback=None, master=root)
 
 
 async def quit_tk():
@@ -105,9 +105,9 @@ async def quit_tk():
 # root window
 root = tk.Tk()
 
-on = tk.PhotoImage(file="imagens/on.png")
-off = tk.PhotoImage(file="imagens/off.png")
-arara = tk.PhotoImage(file="imagens/arara.png")
+on = tk.PhotoImage(file="Codes/imagens/on.png")
+off = tk.PhotoImage(file="Codes/imagens/off.png")
+arara = tk.PhotoImage(file="Codes/imagens/arara.png")
 root.iconphoto(True, arara)
 
 button_connect = ttk.Button(root, text="Connect Arara", command=connect_handler, width=15)
