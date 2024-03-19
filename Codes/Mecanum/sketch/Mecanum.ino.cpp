@@ -1,18 +1,95 @@
 #include <Arduino.h>
-#line 1 "C:\\Users\\enzo\\OneDrive\\Documentos\\Arduino\\Mecanum\\Mecanum.ino"
-#line 1 "C:\\Users\\enzo\\OneDrive\\Documentos\\Arduino\\Mecanum\\Mecanum.ino"
+#line 1 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved2024219-20092-1g5bzea.zq1y\\Mecanum\\Mecanum.ino"
+#include "stemOSboard.h"
+
+
+// Use #define TELEOPERADO for teleop and AUTONOMO for autonomous
+
+#define TELEOPERADO
+
+stemWiFi wifi;
+
+#line 10 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved2024219-20092-1g5bzea.zq1y\\Mecanum\\Mecanum.ino"
 void setup();
-#line 6 "C:\\Users\\enzo\\OneDrive\\Documentos\\Arduino\\Mecanum\\Mecanum.ino"
+#line 21 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved2024219-20092-1g5bzea.zq1y\\Mecanum\\Mecanum.ino"
 void loop();
-#line 1 "C:\\Users\\enzo\\OneDrive\\Documentos\\Arduino\\Mecanum\\Mecanum.ino"
+#line 50 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved2024219-20092-1g5bzea.zq1y\\Mecanum\\Mecanum.ino"
+void userCodeTeleopInit(void * arg);
+#line 55 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved2024219-20092-1g5bzea.zq1y\\Mecanum\\Mecanum.ino"
+void userCodeTeleopLoop(void * arg);
+#line 10 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved2024219-20092-1g5bzea.zq1y\\Mecanum\\Mecanum.ino"
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(115200);
+  wifi.configureWiFiAP();
+
+  delay(100);
+
+  //esp_ipc_call(PRO_CPU_NUM, userCodeTeleopInit, NULL);
+  estado = wifi.waitForStart();
+  Serial.println(estado);
 }
 
-void loop() { 
-  // put your main code here, to run repeatedly:
-  Serial.println("Mecanum");
-  delay(20);
+void loop() {
+  String stat = wifi.getEnable();
+
+  #ifdef TELEOPERADO
+    wifi.getGamepadValues();
+  #endif
+
+  if(estado) {
+    esp_ipc_call(PRO_CPU_NUM, userCodeTeleopLoop, NULL);
+  }
+  if(stat == "Habilitado") {
+    estado = true;
+  } else if(stat == "Desabilitado") {
+    estado = false;
+  }
 }
+
+// =============================================
+//          CÓDIGO-DO-USUÁRIO ABAIXO
+// =============================================
+
+
+Gamepad gamepad;
+
+Motor motorEsquerdaFrente(Motor::PORTA_1, Motor::REVERSE);
+Motor motorEsquerdaTras(Motor::PORTA_2, Motor::REVERSE);
+Motor motorDireitaFrente(Motor::PORTA_3, Motor::FOWARD);
+Motor motorDireitaTras(Motor::PORTA_4, Motor::FOWARD);
+
+void userCodeTeleopInit(void * arg) {
+  // Código do usuário que precisar ser inicializado
+}
+
+// Código do usuário que executará em loop
+void userCodeTeleopLoop(void * arg) {
+    float y = gamepad.getLeftAxisY();
+    float x = gamepad.getLeftAxisX();
+    float turn = gamepad.getRightAxisX();
+
+    float denominator = max(abs(y) + abs(x) + abs(turn), 1.f);
+
+    double frontLeftPower = (y + x + turn) / denominator;
+    double backLeftPower = (y - x + turn) / denominator;
+    double frontRightPower = (y - x - turn) / denominator;
+    double backRightPower = (y + x - turn) / denominator;
+
+    motorEsquerdaFrente.setPower(frontLeftPower);
+    motorEsquerdaTras.setPower(backLeftPower);
+    motorDireitaFrente.setPower(frontRightPower);
+    motorDireitaTras.setPower(backRightPower);
+    
+   // esp_ipc_call(APP_CPU_NUM, updateIMU, NULL);
+    
+
+}
+
+// Caso você queira utilizar um IMU utilize essa função junto do seu código
+/*
+void updateIMU(void * arg) {
+  imu.update();
+}
+*/
+
 

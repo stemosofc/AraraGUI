@@ -82,9 +82,9 @@ def close_dashboard():
 async def upload_to_arara():
     global code
     if valor.__eq__("ArcadeDrive"):
-        code = paths.returnpath("ArcadeDrive")
+        code = paths.returnpath_py("ArcadeDrive")
     if valor.__eq__("Mecanum"):
-        code = paths.returnpath("Mecanum")
+        code = paths.returnpath_py("Mecanum")
     if code.__eq__(" "):
         tkinter.messagebox.showerror("Arara", "Nenhum código foi selecioando!")
     else:
@@ -105,9 +105,9 @@ async def quit_tk():
 # root window
 root = tk.Tk()
 
-on = tk.PhotoImage(file="Codes/imagens/on.png")
-off = tk.PhotoImage(file="Codes/imagens/off.png")
-arara = tk.PhotoImage(file="Codes/imagens/arara.png")
+on = tk.PhotoImage(file="_internal\\Codes\\imagens/on.png")
+off = tk.PhotoImage(file="_internal\\Codes\\imagens/off.png")
+arara = tk.PhotoImage(file="_internal\\Codes\\imagens/arara.png")
 root.iconphoto(True, arara)
 
 button_connect = ttk.Button(root, text="Connect Arara", command=connect_handler, width=15)

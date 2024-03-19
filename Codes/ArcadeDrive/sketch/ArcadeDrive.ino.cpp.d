@@ -1,5 +1,5 @@
-C:\Users\enzo\AppData\Local\Temp\arduino\sketches\2929658F1F44B959C186AC59213BA1BF\sketch\ArcadeDrive.ino.cpp.o: \
- C:\Users\enzo\AppData\Local\Temp\arduino\sketches\2929658F1F44B959C186AC59213BA1BF\sketch\ArcadeDrive.ino.cpp \
+C:\Users\enzo\AppData\Local\Temp\arduino\sketches\F8A05E659C5054BB3304EDAE6A7D14F2\sketch\ArcadeDrive.ino.cpp.o: \
+ C:\Users\enzo\AppData\Local\Temp\arduino\sketches\F8A05E659C5054BB3304EDAE6A7D14F2\sketch\ArcadeDrive.ino.cpp \
  C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\cores\esp32/Arduino.h \
  C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\cores\esp32/esp_arduino_version.h \
  C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/freertos/include/freertos/FreeRTOS.h \
@@ -131,4 +131,91 @@ C:\Users\enzo\AppData\Local\Temp\arduino\sketches\2929658F1F44B959C186AC59213BA1
  C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/spi_flash/include/esp_spi_flash_counters.h \
  C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_hw_support/include/soc/esp32/spiram.h \
  C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\cores\esp32/io_pin_remap.h \
- C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\cores\esp32/Arduino.h
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\cores\esp32/Arduino.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\stemOSBoard/stemOSboard.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\stemOSBoard/Motor.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\stemOSBoard/Encoder.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\stemOSBoard/RotaryEncoder.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\stemOSBoard/stemWiFi.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\libraries\WiFi\src/WiFi.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\cores\esp32/Print.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\cores\esp32/IPv6Address.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\libraries\WiFi\src/WiFiType.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_wifi/include/esp_wifi_types.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_wifi/include/esp_private/esp_wifi_types_private.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_hw_support/include/esp_interface.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_event/include/esp_event_base.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\libraries\WiFi\src/WiFiSTA.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\libraries\WiFi\src/WiFiGeneric.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_event/include/esp_event.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_event/include/esp_event_base.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_event/include/esp_event_legacy.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_netif/include/esp_netif.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_netif/include/esp_netif_ip_addr.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_netif/include/esp_netif_types.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_netif/include/esp_netif_defaults.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_eth/include/esp_eth_netif_glue.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_eth/include/esp_eth.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_eth/include/esp_eth_com.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/hal/include/hal/eth_types.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_eth/include/esp_eth_mac.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_eth/include/esp_eth_phy.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/tcpip_adapter/include/tcpip_adapter.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/tcpip_adapter/include/tcpip_adapter_types.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/lwip/src/include/lwip/ip_addr.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/lwip/src/include/lwip/opt.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/port/esp32/include/lwipopts.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/newlib/platform_include/sys/ioctl.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_system/include/esp_task.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/freertos/include/esp_additions/freertos/FreeRTOSConfig.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/port/esp32/include/netif/dhcp_state.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/port/esp32/include/sntp/sntp_get_set_time.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/lwip/src/include/lwip/debug.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/lwip/src/include/lwip/arch.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/port/esp32/include/arch/cc.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/port/esp32/include/arch/sys_arch.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/port/esp32/include/arch/vfs_lwip.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/lwip/src/include/lwip/def.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/lwip/src/include/lwip/ip4_addr.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/lwip/src/include/lwip/ip6_addr.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/lwip/src/include/lwip/def.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/lwip/src/include/lwip/ip6_zone.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/include/apps/dhcpserver/dhcpserver.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/lwip/lwip/src/include/lwip/err.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_netif/include/esp_netif_sta_list.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_wifi/include/esp_smartconfig.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/wifi_provisioning/include/wifi_provisioning/manager.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/protocomm/include/common/protocomm.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/protocomm/include/security/protocomm_security.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/wifi_provisioning/include/wifi_provisioning/wifi_config.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\libraries\WiFi\src/WiFiAP.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\libraries\WiFi\src/WiFiScan.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\libraries\WiFi\src/WiFiClient.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\cores\esp32/Client.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\libraries\WiFi\src/WiFiServer.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\cores\esp32/Server.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\libraries\WiFi\src/WiFiUdp.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\cores\esp32/Udp.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\cores\esp32/cbuf.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\ESP8266-Websocket-master/WebSocketServer.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\ArduinoJson\src/ArduinoJson.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\ArduinoJson\src/ArduinoJson.hpp \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\ArduinoJson\src/ArduinoJson/Configuration.hpp \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\stemOSBoard/Gamepad.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\stemOSBoard/RGBLED.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\stemOSBoard/Digital.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\stemOSBoard/Servo.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\stemOSBoard/Analog.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\stemOSBoard/IMU.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\Adafruit_ICM20X/Adafruit_ICM20X.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\Adafruit_BusIO/Adafruit_BusIO_Register.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\Adafruit_BusIO/Adafruit_I2CDevice.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\libraries\Wire\src/Wire.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\cores\esp32/esp32-hal.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\Adafruit_BusIO/Adafruit_SPIDevice.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\libraries\SPI\src/SPI.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\cores\esp32/esp32-hal-spi.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\Adafruit_Unified_Sensor/Adafruit_Sensor.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\Adafruit_ICM20X/Adafruit_ICM20948.h \
+ c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\Adafruit_ICM20X/Adafruit_ICM20X.h \
+ C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14/tools/sdk/esp32/include/esp_ipc/include/esp_ipc.h

@@ -1,0 +1,101 @@
+{
+ "version": "auto-py-to-exe-configuration_v1",
+ "pyinstallerOptions": [
+  {
+   "optionDest": "noconfirm",
+   "value": true
+  },
+  {
+   "optionDest": "filenames",
+   "value": "C:/Users/enzo/PycharmProjects/AraraDashboard/dashboard.py"
+  },
+  {
+   "optionDest": "onefile",
+   "value": false
+  },
+  {
+   "optionDest": "console",
+   "value": true
+  },
+  {
+   "optionDest": "icon_file",
+   "value": "C:/Users/enzo/Downloads/arara.png.ico"
+  },
+  {
+   "optionDest": "name",
+   "value": "Arara"
+  },
+  {
+   "optionDest": "clean_build",
+   "value": false
+  },
+  {
+   "optionDest": "strip",
+   "value": false
+  },
+  {
+   "optionDest": "noupx",
+   "value": false
+  },
+  {
+   "optionDest": "disable_windowed_traceback",
+   "value": false
+  },
+  {
+   "optionDest": "uac_admin",
+   "value": false
+  },
+  {
+   "optionDest": "uac_uiaccess",
+   "value": false
+  },
+  {
+   "optionDest": "argv_emulation",
+   "value": false
+  },
+  {
+   "optionDest": "bootloader_ignore_signals",
+   "value": false
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/enzo/PycharmProjects/AraraDashboard/connectarara.py;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/enzo/PycharmProjects/AraraDashboard/gamepad.py;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/enzo/PycharmProjects/AraraDashboard/paths.py;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/enzo/PycharmProjects/AraraDashboard/Codes;Codes/."
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "websockets"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "tk_async_execute"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "esptool"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "intelhex"
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/enzo/OneDrive/Documentos/PlatformIO/Projects/FLUX/lib/teste/stemOSBoard;stemOSBoard/."
+  }
+ ],
+ "nonPyinstallerOptions": {
+  "increaseRecursionLimit": true,
+  "manualArguments": ""
+ }
+}
