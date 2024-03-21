@@ -1,4 +1,5 @@
 import asyncio
+import subprocess
 import tkinter as tk
 import tkinter.messagebox
 from tkinter import ttk
@@ -83,14 +84,16 @@ def close_dashboard():
 async def upload_to_arara():
     global code
     if valor.__eq__("ArcadeDrive"):
-        code = paths.returnpath_exe_auto("ArcadeDrive", caminho="_internal\\")
+        code = paths.flash_code_arara("ArcadeDrive", caminho="_internal\\")
     if valor.__eq__("Mecanum"):
-        code = paths.returnpath_exe_auto("Mecanum", caminho="_internal\\")
+        code = paths.flash_code_arara("Mecanum", caminho="_internal\\")
     if code.__eq__(" "):
         tkinter.messagebox.showerror("Arara", "Nenhum código foi selecioando!")
-    else:
-        os.system(code)
+    if "leaving..." in code.lower():
         tkinter.messagebox.showinfo("Arara", "O código foi passado com sucesso!")
+    else:
+        tkinter.messagebox.showerror("Arara", "Erro ao passar o código!")
+    print(code)
 
 
 def upload_handler():
