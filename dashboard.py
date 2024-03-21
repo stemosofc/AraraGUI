@@ -28,6 +28,7 @@ class CodeJanela(tk.Toplevel):
         self.button_upload = tk.Button(self, text="Ok", command=self.upload)
         self.button_upload.pack()
         self.button_cancel = tk.Button(self, text="Cancel", command=self.destroy)
+        self.button_cancel.pack()
 
     def upload(self):
         global valor
@@ -82,9 +83,9 @@ def close_dashboard():
 async def upload_to_arara():
     global code
     if valor.__eq__("ArcadeDrive"):
-        code = paths.returnpath_py("ArcadeDrive")
+        code = paths.returnpath_exe_auto("ArcadeDrive", caminho="_internal\\")
     if valor.__eq__("Mecanum"):
-        code = paths.returnpath_py("Mecanum")
+        code = paths.returnpath_exe_auto("Mecanum", caminho="_internal\\")
     if code.__eq__(" "):
         tkinter.messagebox.showerror("Arara", "Nenhum código foi selecioando!")
     else:
