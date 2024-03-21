@@ -82,9 +82,9 @@ def close_dashboard():
 async def upload_to_arara():
     global code
     if valor.__eq__("ArcadeDrive"):
-        code = paths.returnpath_py("ArcadeDrive")
+        code = paths.returnpath_exe("ArcadeDrive")
     if valor.__eq__("Mecanum"):
-        code = paths.returnpath_py("Mecanum")
+        code = paths.returnpath_exe("Mecanum")
     if code.__eq__(" "):
         tkinter.messagebox.showerror("Arara", "Nenhum código foi selecioando!")
     else:

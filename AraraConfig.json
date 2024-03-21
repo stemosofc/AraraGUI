@@ -80,18 +80,6 @@
   {
    "optionDest": "hiddenimports",
    "value": "tk_async_execute"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "esptool"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "intelhex"
-  },
-  {
-   "optionDest": "datas",
-   "value": "C:/Users/enzo/OneDrive/Documentos/PlatformIO/Projects/FLUX/lib/teste/stemOSBoard;stemOSBoard/."
   }
  ],
  "nonPyinstallerOptions": {
