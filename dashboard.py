@@ -12,7 +12,6 @@ conectado = False
 is_on = True
 
 valor = " "
-code = " "
 
 caminho_projeto = os.path.abspath('dashboard.py').lower()
 print(caminho_projeto)
@@ -21,7 +20,7 @@ if '\\araradashboard\\'.lower() in caminho_projeto:
 else:
     caminho_projeto = "_internal\\"
 
-print(caminho_projeto)
+item_listbox = ["ArcadeDrive", "Mecanum", "Teste"]
 
 
 class CodeJanela(tk.Toplevel):
@@ -31,9 +30,8 @@ class CodeJanela(tk.Toplevel):
         self.title("Code List")
         self.geometry("200x200")
         self.listbox_codes = tk.Listbox(self, height=5, selectmode="SINGLE")
-        self.listbox_codes.insert(1, 'ArcadeDrive')
-        self.listbox_codes.insert(2, 'Mecanum')
-        self.listbox_codes.insert(3, 'Teste')
+        for i in item_listbox:
+            self.listbox_codes.insert(tk.END, i)
         self.listbox_codes.pack()
         self.button_upload = tk.Button(self, text="Ok", command=self.upload)
         self.button_upload.pack()
@@ -43,11 +41,8 @@ class CodeJanela(tk.Toplevel):
     def upload(self):
         global valor
         curse_selection = self.listbox_codes.curselection()
-        print(curse_selection)
         if curse_selection:
             valor = self.listbox_codes.get(curse_selection)
-        print(valor)
-        print(type(valor))
         upload_handler()
 
 
@@ -91,19 +86,15 @@ def close_dashboard():
 
 
 async def upload_to_arara():
-    global code
-    if valor.__eq__("ArcadeDrive"):
-        code = paths.flash_code_arara("ArcadeDrive", caminho=caminho_projeto)
-    if valor.__eq__("Mecanum"):
-        code = paths.flash_code_arara("Mecanum", caminho=caminho_projeto)
-    if valor.__eq__("Teste"):
-        code = paths.flash_code_arara("Teste", caminho=caminho_projeto)
-    if code.__eq__(" "):
-        tkinter.messagebox.showerror("Arara", "Nenhum código foi selecioando!")
-    if code.__eq__("Flash"):
-        tkinter.messagebox.showinfo("Arara", "O código foi passado com sucesso!")
+    if valor != " ":
+        result = paths.flash_code_arara(valor, caminho=caminho_projeto)
+        match result:
+            case "Flash":
+                tkinter.messagebox.showinfo("Arara", "O código foi passado com sucesso")
+            case "Fatal Exception":
+                tkinter.messagebox.showerror("Arara", "Erro ao dar upload para Arara, tente novamente!")
     else:
-        tkinter.messagebox.showerror("Arara", "Erro ao passar o código! Tente Novamente!")
+        tkinter.messagebox.showwarning("Arara", "Nenhum código foi selecioando!")
 
 
 def upload_handler():

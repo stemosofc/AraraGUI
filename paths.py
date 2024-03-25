@@ -1,4 +1,3 @@
-import getpass
 import os
 import subprocess
 
@@ -26,11 +25,9 @@ def returnpath_exe(name):
     comando = (r'cmd /c "_internal\Codes\esptool.exe '
                r'--before default_reset --after hard_reset write_flash  -z '
                r'--flash_mode dio 0x1000 ' + path + '.ino'
-                                                    r'--chip esp32 --baud 921600  --before default_reset --after hard_reset write_flash  -z '
-                                                    r'--flash_mode dio --flash_freq 80m --flash_size 4MB 0x1000 ' + path + '.ino'
-                                                                                                                           r'.bootloader.bin 0x8000 ' + path + '.ino'
-                                                                                                                                                               r'.partitions.bin 0xe000 ' + caminho_tool_esp32 + ' 0x10000 ' + path + '.ino'
-                                                                                                                                                                                                                                      r'.bin"')
+               r'--chip esp32 --baud 921600  --before default_reset --after hard_reset write_flash  -z '
+               r'--flash_mode dio --flash_freq 80m --flash_size 4MB 0x1000 ' + path + '.ino'
+               r'.bin"')
     return comando
 
 
@@ -56,10 +53,9 @@ def auto_command(name, caminho=""):
     path = caminho + 'Codes\\' + name + '/' + name
     memory = [" 0x1000 ", " 0x8000 ", " 0xe000 ", " 0x10000 "]
     comando = (caminho_esptoolexe + r' --before default_reset --after hard_reset write_flash  -z '
-                                    r'--flash_mode dio' + memory[0] + path + '.ino'
-                                                                             r'.bootloader.bin' + memory[
-                   1] + path + '.ino'
-                               r'.partitions.bin' + memory[2] + caminho_tool_esp32 + memory[3] + path + '.ino.bin')
+               r'--flash_mode dio' + memory[0] + path + '.ino'
+               r'.bootloader.bin' + memory[1] + path + '.ino.partitions.bin' +
+               memory[2] + caminho_tool_esp32 + memory[3] + path + '.ino.bin')
     return comando
 
 
