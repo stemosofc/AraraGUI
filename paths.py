@@ -2,8 +2,6 @@ import getpass
 import os
 import subprocess
 
-username = getpass.getuser()
-
 
 # This is the function used in Arara V1.0
 def returnpath_py(name):
@@ -28,11 +26,11 @@ def returnpath_exe(name):
     comando = (r'cmd /c "_internal\Codes\esptool.exe '
                r'--before default_reset --after hard_reset write_flash  -z '
                r'--flash_mode dio 0x1000 ' + path + '.ino'
-               r'--chip esp32 --baud 921600  --before default_reset --after hard_reset write_flash  -z '
-               r'--flash_mode dio --flash_freq 80m --flash_size 4MB 0x1000 ' + path + '.ino'
-               r'.bootloader.bin 0x8000 ' + path + '.ino'
-               r'.partitions.bin 0xe000 ' + caminho_tool_esp32 + ' 0x10000 ' + path + '.ino'
-               r'.bin"')
+                                                    r'--chip esp32 --baud 921600  --before default_reset --after hard_reset write_flash  -z '
+                                                    r'--flash_mode dio --flash_freq 80m --flash_size 4MB 0x1000 ' + path + '.ino'
+                                                                                                                           r'.bootloader.bin 0x8000 ' + path + '.ino'
+                                                                                                                                                               r'.partitions.bin 0xe000 ' + caminho_tool_esp32 + ' 0x10000 ' + path + '.ino'
+                                                                                                                                                                                                                                      r'.bin"')
     return comando
 
 
@@ -45,9 +43,10 @@ def returnpath_exe_auto(name, caminho=""):
     comando = (r'cmd /c "' + caminho_esptoolexe +
                r' --before default_reset --after hard_reset write_flash  -z '
                r'--flash_mode dio' + memory[0] + path + '.ino'
-               r'.bootloader.bin' + memory[1] + path + '.ino'
-               r'.partitions.bin' + memory[2] + caminho_tool_esp32 + memory[3] + path + '.ino'
-               r'.bin"')
+                                                        r'.bootloader.bin' + memory[1] + path + '.ino'
+                                                                                                r'.partitions.bin' +
+               memory[2] + caminho_tool_esp32 + memory[3] + path + '.ino'
+                                                                   r'.bin"')
     return comando
 
 
@@ -57,13 +56,21 @@ def auto_command(name, caminho=""):
     path = caminho + 'Codes\\' + name + '/' + name
     memory = [" 0x1000 ", " 0x8000 ", " 0xe000 ", " 0x10000 "]
     comando = (caminho_esptoolexe + r' --before default_reset --after hard_reset write_flash  -z '
-               r'--flash_mode dio' + memory[0] + path + '.ino'
-               r'.bootloader.bin' + memory[1] + path + '.ino'
-               r'.partitions.bin' + memory[2] + caminho_tool_esp32 + memory[3] + path + '.ino.bin')
+                                    r'--flash_mode dio' + memory[0] + path + '.ino'
+                                                                             r'.bootloader.bin' + memory[
+                   1] + path + '.ino'
+                               r'.partitions.bin' + memory[2] + caminho_tool_esp32 + memory[3] + path + '.ino.bin')
     return comando
 
 
 def flash_code_arara(name, caminho=""):
     result = auto_command(name, caminho)
-    result_command = subprocess.run(result.split(), check=True, capture_output=True, text=True)
-    return result_command.stdout
+    result_command = subprocess.run(result.split(), capture_output=True, text=True)
+    return found_error(result_command.stdout)
+
+
+def found_error(output):
+    if "a fatal error occurred:" in output.lower():
+        return "Fatal Exception"
+    else:
+        return "Flash"

@@ -1,5 +1,4 @@
 import asyncio
-import subprocess
 import tkinter as tk
 import tkinter.messagebox
 from tkinter import ttk
@@ -15,6 +14,15 @@ is_on = True
 valor = " "
 code = " "
 
+caminho_projeto = os.path.abspath('dashboard.py').lower()
+print(caminho_projeto)
+if '\\araradashboard\\'.lower() in caminho_projeto:
+    caminho_projeto = ""
+else:
+    caminho_projeto = "_internal\\"
+
+print(caminho_projeto)
+
 
 class CodeJanela(tk.Toplevel):
 
@@ -25,6 +33,7 @@ class CodeJanela(tk.Toplevel):
         self.listbox_codes = tk.Listbox(self, height=5, selectmode="SINGLE")
         self.listbox_codes.insert(1, 'ArcadeDrive')
         self.listbox_codes.insert(2, 'Mecanum')
+        self.listbox_codes.insert(3, 'Teste')
         self.listbox_codes.pack()
         self.button_upload = tk.Button(self, text="Ok", command=self.upload)
         self.button_upload.pack()
@@ -84,16 +93,17 @@ def close_dashboard():
 async def upload_to_arara():
     global code
     if valor.__eq__("ArcadeDrive"):
-        code = paths.flash_code_arara("ArcadeDrive", caminho="_internal\\")
+        code = paths.flash_code_arara("ArcadeDrive", caminho=caminho_projeto)
     if valor.__eq__("Mecanum"):
-        code = paths.flash_code_arara("Mecanum", caminho="_internal\\")
+        code = paths.flash_code_arara("Mecanum", caminho=caminho_projeto)
+    if valor.__eq__("Teste"):
+        code = paths.flash_code_arara("Teste", caminho=caminho_projeto)
     if code.__eq__(" "):
         tkinter.messagebox.showerror("Arara", "Nenhum código foi selecioando!")
-    if "leaving..." in code.lower():
+    if code.__eq__("Flash"):
         tkinter.messagebox.showinfo("Arara", "O código foi passado com sucesso!")
     else:
-        tkinter.messagebox.showerror("Arara", "Erro ao passar o código!")
-    print(code)
+        tkinter.messagebox.showerror("Arara", "Erro ao passar o código! Tente Novamente!")
 
 
 def upload_handler():
@@ -109,9 +119,9 @@ async def quit_tk():
 # root window
 root = tk.Tk()
 
-on = tk.PhotoImage(file="_internal\\Codes\\imagens/on.png")
-off = tk.PhotoImage(file="_internal\\Codes\\imagens/off.png")
-arara = tk.PhotoImage(file="_internal\\Codes\\imagens/arara.png")
+on = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/on.png")
+off = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/off.png")
+arara = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/arara.png")
 root.iconphoto(True, arara)
 
 button_connect = ttk.Button(root, text="Connect Arara", command=connect_handler, width=15)
