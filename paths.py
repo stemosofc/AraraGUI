@@ -62,7 +62,7 @@ def auto_command(name, caminho=""):
 def flash_code_arara(name, caminho=""):
     result = auto_command(name, caminho)
     result_command = subprocess.run(result.split(), capture_output=True, text=True)
-    return result_command.stdout
+    return found_error(result_command.stdout)
 
 
 def found_error(output):
