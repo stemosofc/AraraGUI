@@ -52,7 +52,7 @@ def auto_command(name, caminho=""):
     caminho_esptoolexe = caminho + "Codes\\esptool.exe"
     path = caminho + 'Codes\\' + name + '/' + name
     memory = [" 0x1000 ", " 0x8000 ", " 0xe000 ", " 0x10000 "]
-    comando = (caminho_esptoolexe + r' --before default_reset --after hard_reset write_flash  -z '
+    comando = (caminho_esptoolexe + r' --baud 921600 --before default_reset --after hard_reset write_flash  -z '
                r'--flash_mode dio' + memory[0] + path + '.ino'
                r'.bootloader.bin' + memory[1] + path + '.ino.partitions.bin' +
                memory[2] + caminho_tool_esp32 + memory[3] + path + '.ino.bin')
@@ -62,7 +62,7 @@ def auto_command(name, caminho=""):
 def flash_code_arara(name, caminho=""):
     result = auto_command(name, caminho)
     result_command = subprocess.run(result.split(), capture_output=True, text=True)
-    return found_error(result_command.stdout)
+    return result_command.stdout
 
 
 def found_error(output):
