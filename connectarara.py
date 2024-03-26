@@ -11,6 +11,12 @@ async def connect_wifi():
     await asyncio.sleep(0.010)
 
 
+async def connect_wifi_debugging():
+    global ws
+    ws = await websockets.connect('ws://localhost')
+    await asyncio.sleep(0.010)
+
+
 async def disconnect_wifi():
     await ws.close()
 
@@ -27,3 +33,7 @@ async def senddisable():
 
 async def receiveconnect():
     return await ws.recv()
+
+
+async def sendvalues(mensagem):
+    await ws.send(mensagem)

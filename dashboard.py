@@ -2,7 +2,9 @@ import asyncio
 import tkinter as tk
 import tkinter.messagebox
 from tkinter import ttk
+import gamepad
 import paths
+import threading
 import connectarara
 import tk_async_execute as tae
 import os
@@ -10,7 +12,6 @@ import os
 conectado = False
 
 is_on = True
-
 valor = " "
 
 caminho_projeto = os.path.abspath('dashboard.py').lower()
@@ -19,8 +20,11 @@ if '\\araradashboard\\'.lower() in caminho_projeto:
 else:
     caminho_projeto = "_internal\\"
 
-
 item_listbox = ["ArcadeDrive", "Mecanum", "Teste"]
+
+
+async def rain_tkinter():
+    root.mainloop()
 
 
 class CodeJanela(tk.Toplevel):
@@ -50,7 +54,7 @@ async def connect():
     await connectarara.connect_wifi()
     await asyncio.sleep(0.02)
     connected_msg()
-    button_enable.place(x=250, y=50)
+    print("AAAAAA")
 
 
 def connected_msg():
@@ -64,21 +68,37 @@ def connect_handler():
     tae.async_execute(connect(), wait=True, visible=True, pop_up=True, callback=None, master=root)
 
 
+async def send_gamepad_values():
+    while not is_on:
+        try:
+            data = gamepad.getjson()
+            await connectarara.sendvalues(data)
+            print(data)
+            await asyncio.sleep(0.02)
+        except asyncio.CancelledError:
+            tkinter.messagebox.showerror("Arara", "Falha ao enviar valores do gamepad a Arara")
+
+
+def handler():
+    asyncio.run(send_gamepad_values())
+
+
 async def switch():
     global is_on
-    # Determine is on or off
     if is_on:
         button_enable.config(image=on)
-        await connectarara.sendenable()
         is_on = False
+        # await connectarara.sendenable()
     else:
         button_enable.config(image=off)
-        await connectarara.senddisable()
+        # await connectarara.senddisable()
         is_on = True
 
 
 def toggle():
     tae.async_execute(switch(), wait=True, pop_up=False, callback=None, master=root)
+    thread = threading.Thread(target=handler, daemon=True)
+    thread.start()
 
 
 def close_dashboard():
@@ -102,6 +122,8 @@ def upload_handler():
 
 
 async def quit_tk():
+    global is_on
+    is_on = False
     if conectado:
         await connectarara.disconnect_wifi()
     root.quit()
@@ -121,6 +143,7 @@ button_upload = ttk.Button(root, text="Upload", command=CodeJanela)
 button_upload.place(x=15, y=200)
 
 button_enable = ttk.Button(root, image=off, command=toggle)
+button_enable.place(x=250, y=50)
 # status = tkinter.Label(root, text="Arara não conectada a Driver Station", font=("Helvetica", 13), fg="gray")
 # status.grid(column=1, row=0, padx=50, pady=20)
 root.geometry("450x450")
@@ -131,5 +154,6 @@ button_exit = ttk.Button(root, text="Disconnect", command=close_dashboard, width
 button_exit.place(x=15, y=350)
 tae.start()
 root.protocol("WM_DELETE_WINDOW", close_dashboard)
-root.mainloop()
+
+asyncio.run(rain_tkinter())
 tae.stop()
