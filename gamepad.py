@@ -1,6 +1,7 @@
 import json
 import pygame
 
+# Inicia o módulo do pygame
 pygame.init()
 
 # initialise the joystick module
@@ -8,12 +9,15 @@ pygame.joystick.init()
 joysticks = []
 
 
+# Retorna a leitura dos gamepad
 def getjson():
     # event handler
     for event in pygame.event.get():
         if event.type == pygame.JOYDEVICEADDED:
             joy = pygame.joystick.Joystick(event.device_index)
             joysticks.append(joy)
+        if event.type == pygame.JOYDEVICEREMOVED:
+            pass
     for joystick in joysticks:
         # player movement with analogue sticks
         eixo_esquerdax = joystick.get_axis(0)

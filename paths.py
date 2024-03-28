@@ -47,6 +47,7 @@ def returnpath_exe_auto(name, caminho=""):
     return comando
 
 
+# Função que cria o comando que deve ser executado no terminal
 def auto_command(name, caminho=""):
     caminho_tool_esp32 = caminho + 'Codes/boot_app0.bin '
     caminho_esptoolexe = caminho + "Codes\\esptool.exe"
@@ -59,12 +60,14 @@ def auto_command(name, caminho=""):
     return comando
 
 
+# Função que faz flash do código na placa e retorna um resultado
 def flash_code_arara(name, caminho=""):
     result = auto_command(name, caminho)
     result_command = subprocess.run(result.split(), capture_output=True, text=True)
     return found_error(result_command.stdout)
 
 
+# Função que retorna se algum erro ocorreu ou se o código foi upado com sucesso
 def found_error(output):
     if "a fatal error occurred:" in output.lower():
         return "Fatal Exception"
