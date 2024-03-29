@@ -44,14 +44,16 @@ class CodeJanela(tk.Toplevel):
     def __init__(self, master=None):
         super().__init__(master=master)
         self.title("Códigos")
+        self.configure(background="#d3d3d3", highlightthickness=0)
         self.geometry("200x200")
-        self.listbox_codes = tk.Listbox(self, height=5, selectmode="SINGLE")
+        self.resizable(False, False)
+        self.listbox_codes = tk.Listbox(self, height=5, selectmode="SINGLE", highlightthickness=0)
         for i in item_listbox:
             self.listbox_codes.insert(tk.END, i)  # Indexa todos os elentos a listbox
         self.listbox_codes.pack()
-        self.button_upload = tk.Button(self, text="Ok", command=self.upload)
+        self.button_upload = tk.Button(self, text="Ok", command=self.upload, highlightthickness=0)
         self.button_upload.place(x=100, y=170)
-        self.button_cancel = tk.Button(self, text="Cancel", command=self.destroy)
+        self.button_cancel = tk.Button(self, text="Cancel", command=self.destroy, highlightthickness=0)
         self.button_cancel.place(x=130, y=170)
 
     # Função que define qual objeto da lista deve ser instalado
@@ -77,6 +79,10 @@ def connected_msg():
     # status.config(text="Arara Conectada", fg="green")
 
 
+def connect_thread():
+    threading.Thread(target=connect_handler, daemon=True).start()
+
+
 # Função que lança uma co-rotina para conectar a placa
 def connect_handler():
     try:
@@ -99,7 +105,6 @@ async def send_gamepad_values():
                 # Caso a conexão caia mostra o seguinte aviso
                 tkinter.messagebox.showerror("Arara", "Placa desconectada! Verifique o WiFi!")
                 await switch()
-                runner.close()
                 break
     global c
     c = 0
@@ -172,32 +177,45 @@ async def quit_tk():
 
 # Janela principal
 root = tk.Tk()
-
+root.configure(background="#d3d3d3", highlightthickness=0)
 # Imagens utilizadas no aplicativo
 on = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/on.png")
 off = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/off.png")
 arara = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/arara.png")
 root.iconphoto(True, arara)
-
+arara_logo = tk.PhotoImage(file=(caminho_projeto + "Codes\\imagens/arara_logo.png"))
+wifi_icon = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/wifi.png")
+exit_icon = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/exit.png")
+transferir_icon = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/transferir.png")
+canvas = tk.Canvas(root, width=470, height=100, background="#787878", highlightthickness=0, highlightcolor='black')
+canvas.place(y=0, x=-5)
+imagem_al = tk.Label(canvas, image=arara_logo, bg='#5c0a5c')
+imagem_al.place(x=40, y=20)
+canvas.create_rectangle(0, 0, 470, 100, fill='#5c0a5c')
+text_stemos = tk.Label(text='stemOS', font=('Roboto', 45), fg='#fff', bg='#5c0a5c', width=10, highlightthickness=0)
+text_stemos.place(y=10, x=150)
 # Cria os botões de conexão e upload
-button_connect = ttk.Button(root, text="Connect Arara", command=connect_handler, width=15)
-button_connect.place(x=15, y=50)
-button_upload = ttk.Button(root, text="Upload", command=CodeJanela)
-button_upload.place(x=15, y=200)
+button_connect = tk.Button(root, image=wifi_icon, command=connect_thread, width=80, highlightthickness=0,
+                           borderwidth=0, bg="#d3d3d3")
+button_connect.place(x=25, y=150)
+button_upload = tk.Button(root, image=transferir_icon, command=CodeJanela, highlightthickness=0, width=80,
+                          borderwidth=0, bg="#d3d3d3")
+button_upload.place(x=25, y=250)
 
 # Cria o botão de enable mas não mostra
-button_enable = ttk.Button(root, image=off, command=toggle)
+button_enable = tk.Button(root, image=off, command=toggle, highlightthickness=0)
 # status = tkinter.Label(root, text="Arara não conectada a Driver Station", font=("Helvetica", 13), fg="gray")
 # status.grid(column=1, row=0, padx=50, pady=20)
 
 # Define o tamanho da janela e o título
 root.geometry("450x450")
 root.resizable(False, False)
-root.title('Arara Demo')
+root.title('Arara v1.2')
 
 # Botão de desconexão
-button_exit = ttk.Button(root, text="Disconnect", command=close_dashboard, width=15)
-button_exit.place(x=15, y=350)
+button_exit = tk.Button(root, image=exit_icon, command=close_dashboard, width=70,
+                        highlightthickness=0, borderwidth=0, bg="#d3d3d3")
+button_exit.place(x=30, y=350)
 
 # Loop do tkinter e tk-async
 tae.start()
