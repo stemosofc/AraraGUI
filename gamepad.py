@@ -20,8 +20,8 @@ def getjson():
             pass
     for joystick in joysticks:
         # player movement with analogue sticks
-        eixo_esquerdax = joystick.get_axis(0)
-        eixo_esquerday = joystick.get_axis(1)
+        eixo_esquerdax = round(joystick.get_axis(0), 3)
+        eixo_esquerday = round(joystick.get_axis(1), 3)
 
         buttona = joystick.get_button(0)  # B
         buttonb = joystick.get_button(1)  # X

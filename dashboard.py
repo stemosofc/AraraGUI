@@ -1,7 +1,6 @@
 import asyncio
 import tkinter as tk
 import tkinter.messagebox
-from tkinter import ttk
 import gamepad
 import paths
 import threading
@@ -29,7 +28,7 @@ else:
 # Lista que possui todos os códigos que podem ser executados na placa
 # Caso for adicionar uma nova pasta, lembre-se de colocar nessa lista o nome exato do diretório que possui o binário do
 # código c++
-item_listbox = ["ArcadeDrive", "Mecanum", "Teste"]
+item_listbox = ["ArcadeDrive", "Mecanum", "Teste", "Print"]
 
 # Cria um objeto de loop principal, necessário para rodar todas partes do programa em um único gerenciador
 runner = asyncio.Runner()
@@ -69,7 +68,7 @@ async def connect():
     await connectarara.connect_wifi()
     await asyncio.sleep(0.02)
     connected_msg()
-    button_enable.place(x=250, y=50)
+    button_enable.place(x=250, y=260)
 
 
 def connected_msg():
@@ -89,6 +88,10 @@ def connect_handler():
         runner.run(connect())
     except TimeoutError:
         tkinter.messagebox.showerror("Arara", "Timeout error")
+    except ConnectionAbortedError:
+        tkinter.messagebox.showerror("Arara", "A conexão foi anulada pelo sistema")
+    except OSError:
+        tkinter.messagebox.showerror("Arara", "Não é possível alcançar o local da rede")
 
 
 # Função que envia os valores do gamepad a placa
@@ -99,12 +102,11 @@ async def send_gamepad_values():
             try:
                 data = gamepad.getjson()  # Retorna os valores do gamepad (já codificado)
                 await connectarara.sendvalues(data)  # Envia os valores para a placa
-                print(data)
-                await asyncio.sleep(0.035)  # Espera 35ms
+                await asyncio.sleep(0.025)  # Espera 25ms
             except connectarara.return_error_closed():
                 # Caso a conexão caia mostra o seguinte aviso
                 tkinter.messagebox.showerror("Arara", "Placa desconectada! Verifique o WiFi!")
-                await switch()
+                conectado = False
                 break
     global c
     c = 0
@@ -121,11 +123,22 @@ async def switch():
     if is_on:
         button_enable.config(image=on)
         is_on = False
-        await connectarara.sendenable()
+        try:
+            await connectarara.sendenable()
+        except AssertionError as msg:
+            print(msg)
     else:
         button_enable.config(image=off)
-        await connectarara.senddisable()
         is_on = True
+        try:
+            await asyncio.sleep(0.05)
+            await connectarara.senddisable()
+        except AssertionError as msg:
+            print(msg)
+
+
+def switch_handler():
+    pass
 
 
 # Função que lança o toggle e inicia a enviar os valores do gamepad
@@ -178,15 +191,17 @@ async def quit_tk():
 # Janela principal
 root = tk.Tk()
 root.configure(background="#d3d3d3", highlightthickness=0)
+
 # Imagens utilizadas no aplicativo
 on = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/on.png")
 off = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/off.png")
 arara = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/arara.png")
-root.iconphoto(True, arara)
 arara_logo = tk.PhotoImage(file=(caminho_projeto + "Codes\\imagens/arara_logo.png"))
 wifi_icon = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/wifi.png")
 exit_icon = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/exit.png")
 transferir_icon = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/transferir.png")
+
+root.iconphoto(True, arara)
 canvas = tk.Canvas(root, width=470, height=100, background="#787878", highlightthickness=0, highlightcolor='black')
 canvas.place(y=0, x=-5)
 imagem_al = tk.Label(canvas, image=arara_logo, bg='#5c0a5c')
@@ -204,6 +219,7 @@ button_upload.place(x=25, y=250)
 
 # Cria o botão de enable mas não mostra
 button_enable = tk.Button(root, image=off, command=toggle, highlightthickness=0)
+
 # status = tkinter.Label(root, text="Arara não conectada a Driver Station", font=("Helvetica", 13), fg="gray")
 # status.grid(column=1, row=0, padx=50, pady=20)
 

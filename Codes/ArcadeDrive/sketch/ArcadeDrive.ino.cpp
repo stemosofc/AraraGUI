@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#line 1 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved2024219-20092-1yblp4.ce6ne\\ArcadeDrive\\ArcadeDrive.ino"
+#line 1 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved202431-21316-cuk4b4.mkym\\ArcadeDrive\\ArcadeDrive.ino"
 #include "stemOSboard.h"
 
 
@@ -9,13 +9,18 @@
 
 stemWiFi wifi;
 
-#line 10 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved2024219-20092-1yblp4.ce6ne\\ArcadeDrive\\ArcadeDrive.ino"
+Gamepad gamepad;
+
+Motor motorEsquerdaFrente(Motor::PORTA_1, Motor::REVERSE);
+Motor motorEsquerdaTras(Motor::PORTA_2, Motor::REVERSE);
+
+#line 15 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved202431-21316-cuk4b4.mkym\\ArcadeDrive\\ArcadeDrive.ino"
 void setup();
-#line 21 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved2024219-20092-1yblp4.ce6ne\\ArcadeDrive\\ArcadeDrive.ino"
+#line 26 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved202431-21316-cuk4b4.mkym\\ArcadeDrive\\ArcadeDrive.ino"
 void loop();
-#line 48 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved2024219-20092-1yblp4.ce6ne\\ArcadeDrive\\ArcadeDrive.ino"
+#line 62 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved202431-21316-cuk4b4.mkym\\ArcadeDrive\\ArcadeDrive.ino"
 void userCodeTeleopLoop(void * arg);
-#line 10 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved2024219-20092-1yblp4.ce6ne\\ArcadeDrive\\ArcadeDrive.ino"
+#line 15 "C:\\Users\\enzo\\AppData\\Local\\Temp\\.arduinoIDE-unsaved202431-21316-cuk4b4.mkym\\ArcadeDrive\\ArcadeDrive.ino"
 void setup() {
   Serial.begin(115200);
   wifi.configureWiFiAP();
@@ -35,7 +40,21 @@ void loop() {
   #endif
 
   if(estado) {
-    esp_ipc_call(PRO_CPU_NUM, userCodeTeleopLoop, NULL);
+    //esp_ipc_call(PRO_CPU_NUM, userCodeTeleopLoop, NULL);
+    // Código Arcade Drive aqui dentro
+    float y = gamepad.getLeftAxisY();
+    float turn = gamepad.getRightAxisX();
+
+    double frontLeftPower = (y + turn);
+    double backLeftPower = (y - turn);
+
+    double maximum = max(abs(frontLeftPower), abs(backLeftPower));
+
+    frontLeftPower /= maximum;
+    backLeftPower /= maximum;
+
+    motorEsquerdaFrente.setPower(frontLeftPower);
+    motorEsquerdaTras.setPower(backLeftPower);
   }
   if(stat == "Habilitado") {
     estado = true;
@@ -48,13 +67,9 @@ void loop() {
 //          CÓDIGO-DO-USUÁRIO ABAIXO
 // =============================================
 
-Gamepad gamepad;
-
-Motor motorEsquerdaFrente(Motor::PORTA_1, Motor::REVERSE);
-Motor motorEsquerdaTras(Motor::PORTA_2, Motor::REVERSE);
-
 // Código do usuário que executará em loop
 void userCodeTeleopLoop(void * arg) {
+  /*
   #ifdef TELEOPERADO
     float y = gamepad.getLeftAxisY();
     float turn = gamepad.getRightAxisX();
@@ -73,6 +88,7 @@ void userCodeTeleopLoop(void * arg) {
     Serial.println("Habilitado Arcade Drive");
   #endif
     //esp_ipc_call(APP_CPU_NUM, updateIMU, NULL);
+  */
 }
 
 // Caso você queira utilizar um IMU utilize essa função junto do seu código

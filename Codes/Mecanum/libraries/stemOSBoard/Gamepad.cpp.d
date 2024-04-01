@@ -1,4 +1,4 @@
-C:\Users\enzo\AppData\Local\Temp\arduino\sketches\56878E6B5F8569A4CBE164522DA157E8\libraries\stemOSBoard\Gamepad.cpp.o: \
+C:\Users\enzo\AppData\Local\Temp\arduino\sketches\47E7F9E1E1C834A7A892F3C85E80DDE5\libraries\stemOSBoard\Gamepad.cpp.o: \
  c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\stemOSBoard\Gamepad.cpp \
  c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\stemOSBoard\Gamepad.h \
  c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\ArduinoJson\src/ArduinoJson.h \

@@ -10,52 +10,52 @@
     "Includepath": "C:\\Users\\enzo\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.14\\variants\\esp32da"
   },
   {
-    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\56878E6B5F8569A4CBE164522DA157E8\\sketch\\Mecanum.ino.cpp",
+    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\47E7F9E1E1C834A7A892F3C85E80DDE5\\sketch\\Mecanum.ino.cpp",
     "Include": "stemOSboard.h",
     "Includepath": "c:\\Users\\enzo\\OneDrive\\Documentos\\Arduino\\libraries\\stemOSBoard"
   },
   {
-    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\56878E6B5F8569A4CBE164522DA157E8\\sketch\\Mecanum.ino.cpp",
+    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\47E7F9E1E1C834A7A892F3C85E80DDE5\\sketch\\Mecanum.ino.cpp",
     "Include": "WiFi.h",
     "Includepath": "C:\\Users\\enzo\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.14\\libraries\\WiFi\\src"
   },
   {
-    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\56878E6B5F8569A4CBE164522DA157E8\\sketch\\Mecanum.ino.cpp",
+    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\47E7F9E1E1C834A7A892F3C85E80DDE5\\sketch\\Mecanum.ino.cpp",
     "Include": "WebSocketServer.h",
     "Includepath": "c:\\Users\\enzo\\OneDrive\\Documentos\\Arduino\\libraries\\ESP8266-Websocket-master"
   },
   {
-    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\56878E6B5F8569A4CBE164522DA157E8\\sketch\\Mecanum.ino.cpp",
+    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\47E7F9E1E1C834A7A892F3C85E80DDE5\\sketch\\Mecanum.ino.cpp",
     "Include": "ArduinoJson.h",
     "Includepath": "c:\\Users\\enzo\\OneDrive\\Documentos\\Arduino\\libraries\\ArduinoJson\\src"
   },
   {
-    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\56878E6B5F8569A4CBE164522DA157E8\\sketch\\Mecanum.ino.cpp",
+    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\47E7F9E1E1C834A7A892F3C85E80DDE5\\sketch\\Mecanum.ino.cpp",
     "Include": "Adafruit_ICM20X.h",
     "Includepath": "c:\\Users\\enzo\\OneDrive\\Documentos\\Arduino\\libraries\\Adafruit_ICM20X"
   },
   {
-    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\56878E6B5F8569A4CBE164522DA157E8\\sketch\\Mecanum.ino.cpp",
+    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\47E7F9E1E1C834A7A892F3C85E80DDE5\\sketch\\Mecanum.ino.cpp",
     "Include": "Adafruit_BusIO_Register.h",
     "Includepath": "c:\\Users\\enzo\\OneDrive\\Documentos\\Arduino\\libraries\\Adafruit_BusIO"
   },
   {
-    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\56878E6B5F8569A4CBE164522DA157E8\\sketch\\Mecanum.ino.cpp",
+    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\47E7F9E1E1C834A7A892F3C85E80DDE5\\sketch\\Mecanum.ino.cpp",
     "Include": "Wire.h",
     "Includepath": "C:\\Users\\enzo\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.14\\libraries\\Wire\\src"
   },
   {
-    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\56878E6B5F8569A4CBE164522DA157E8\\sketch\\Mecanum.ino.cpp",
+    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\47E7F9E1E1C834A7A892F3C85E80DDE5\\sketch\\Mecanum.ino.cpp",
     "Include": "SPI.h",
     "Includepath": "C:\\Users\\enzo\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.14\\libraries\\SPI\\src"
   },
   {
-    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\56878E6B5F8569A4CBE164522DA157E8\\sketch\\Mecanum.ino.cpp",
+    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\47E7F9E1E1C834A7A892F3C85E80DDE5\\sketch\\Mecanum.ino.cpp",
     "Include": "Adafruit_Sensor.h",
     "Includepath": "c:\\Users\\enzo\\OneDrive\\Documentos\\Arduino\\libraries\\Adafruit_Unified_Sensor"
   },
   {
-    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\56878E6B5F8569A4CBE164522DA157E8\\sketch\\Mecanum.ino.cpp",
+    "Sourcefile": "C:\\Users\\enzo\\AppData\\Local\\Temp\\arduino\\sketches\\47E7F9E1E1C834A7A892F3C85E80DDE5\\sketch\\Mecanum.ino.cpp",
     "Include": "",
     "Includepath": null
   },

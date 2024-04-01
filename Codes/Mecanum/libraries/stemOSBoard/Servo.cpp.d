@@ -1,4 +1,4 @@
-C:\Users\enzo\AppData\Local\Temp\arduino\sketches\56878E6B5F8569A4CBE164522DA157E8\libraries\stemOSBoard\Servo.cpp.o: \
+C:\Users\enzo\AppData\Local\Temp\arduino\sketches\47E7F9E1E1C834A7A892F3C85E80DDE5\libraries\stemOSBoard\Servo.cpp.o: \
  c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\stemOSBoard\Servo.cpp \
  c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\stemOSBoard\Servo.h \
  C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\cores\esp32/Arduino.h \

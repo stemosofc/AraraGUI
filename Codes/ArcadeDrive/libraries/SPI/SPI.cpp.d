@@ -1,4 +1,4 @@
-C:\Users\enzo\AppData\Local\Temp\arduino\sketches\F8A05E659C5054BB3304EDAE6A7D14F2\libraries\SPI\SPI.cpp.o: \
+C:\Users\enzo\AppData\Local\Temp\arduino\sketches\1DE55F1BAB9C862569A93856C2B022EC\libraries\SPI\SPI.cpp.o: \
  C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\libraries\SPI\src\SPI.cpp \
  C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\libraries\SPI\src\SPI.h \
  C:\Users\enzo\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.14\variants\esp32da/pins_arduino.h \

@@ -1,8 +1,13 @@
 import asyncio
 import json
 import websockets
+import logging
+
 
 global ws
+logger = logging.getLogger('websockets')
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler())
 
 
 # Cria o objeto de websockets
@@ -37,7 +42,7 @@ async def senddisable():
 
 
 # Função que recebe a conexão da placa
-async def receiveconnect():
+async def receive():
     return await ws.recv()
 
 

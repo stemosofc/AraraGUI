@@ -1,4 +1,4 @@
-C:\Users\enzo\AppData\Local\Temp\arduino\sketches\56878E6B5F8569A4CBE164522DA157E8\libraries\ESP8266-Websocket-master\WebSocketServer.cpp.o: \
+C:\Users\enzo\AppData\Local\Temp\arduino\sketches\47E7F9E1E1C834A7A892F3C85E80DDE5\libraries\ESP8266-Websocket-master\WebSocketServer.cpp.o: \
  c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\ESP8266-Websocket-master\WebSocketServer.cpp \
  c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\ESP8266-Websocket-master\global.h \
  c:\Users\enzo\OneDrive\Documentos\Arduino\libraries\ESP8266-Websocket-master\WebSocketServer.h \
