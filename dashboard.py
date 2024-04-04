@@ -36,6 +36,22 @@ runner = asyncio.Runner()
 # Variável que define se o programa foi aberto
 c = 0
 
+estado_gamepad = False
+
+
+def gamepad_events():
+    global estado_gamepad
+    while True:
+        estado_gamepad = gamepad.event_gamepad()
+        if estado_gamepad:
+            imagem_gamepad.config(image=gamepad_icon_off, highlightcolor='#00FF00', highlightthickness=3)
+        else:
+            imagem_gamepad.config(image=gamepad_icon_off, highlightthickness=0)
+
+
+def handler_gamepad():
+    pass
+
 
 # Classe que abre uma janela para selecionar um código para dar upload na placa
 class CodeJanela(tk.Toplevel):
@@ -98,7 +114,7 @@ def connect_handler():
 async def send_gamepad_values():
     global conectado
     while conectado:  # Verifica se placa está conectada (Loop só fecha quando a janela principal fecha)
-        while not is_on:  # Verifica se a o estado do botão está em enable/disable
+        while not is_on and estado_gamepad:  # Verifica se a o estado do botão está em enable/disable
             try:
                 data = gamepad.getjson()  # Retorna os valores do gamepad (já codificado)
                 await connectarara.sendvalues(data)  # Envia os valores para a placa
@@ -200,7 +216,10 @@ arara_logo = tk.PhotoImage(file=(caminho_projeto + "Codes\\imagens/arara_logo.pn
 wifi_icon = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/wifi.png")
 exit_icon = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/exit.png")
 transferir_icon = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/transferir.png")
-
+gamepad_icon_off = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/gamepadoff.png")
+gamepad_icon_on = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/gamepadon.png")
+imagem_gamepad = tk.Label(root, image=gamepad_icon_off, background="#d3d3d3")
+imagem_gamepad.place(x=350, y=350)
 root.iconphoto(True, arara)
 canvas = tk.Canvas(root, width=470, height=100, background="#787878", highlightthickness=0, highlightcolor='black')
 canvas.place(y=0, x=-5)
@@ -232,7 +251,7 @@ root.title('Arara v1.2')
 button_exit = tk.Button(root, image=exit_icon, command=close_dashboard, width=70,
                         highlightthickness=0, borderwidth=0, bg="#d3d3d3")
 button_exit.place(x=30, y=350)
-
+threading.Thread(target=gamepad_events, daemon=True).start()
 # Loop do tkinter e tk-async
 tae.start()
 root.protocol("WM_DELETE_WINDOW", close_dashboard)
