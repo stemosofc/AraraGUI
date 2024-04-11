@@ -80,6 +80,10 @@
   {
    "optionDest": "hiddenimports",
    "value": "tk_async_execute"
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/enzo/PycharmProjects/AraraDashboard/constants.py;."
   }
  ],
  "nonPyinstallerOptions": {

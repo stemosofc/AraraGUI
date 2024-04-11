@@ -1,6 +1,7 @@
 import asyncio
 import tkinter as tk
 import tkinter.messagebox
+import constants
 import gamepad
 import paths
 import threading
@@ -44,7 +45,7 @@ def gamepad_events():
     while True:
         estado_gamepad = gamepad.event_gamepad()
         if estado_gamepad:
-            imagem_gamepad.config(image=gamepad_icon_off, highlightcolor='#00FF00', highlightthickness=3)
+            imagem_gamepad.config(image=gamepad_icon_on, highlightthickness=0)
         else:
             imagem_gamepad.config(image=gamepad_icon_off, highlightthickness=0)
 
@@ -84,7 +85,7 @@ async def connect():
     await connectarara.connect_wifi()
     await asyncio.sleep(0.02)
     connected_msg()
-    button_enable.place(x=250, y=260)
+    button_enable.place(x=constants.ButtonEnable.POSICAO_X, y=constants.ButtonEnable.POSICAO_y)
 
 
 def connected_msg():
@@ -108,6 +109,8 @@ def connect_handler():
         tkinter.messagebox.showerror("Arara", "A conexão foi anulada pelo sistema")
     except OSError:
         tkinter.messagebox.showerror("Arara", "Não é possível alcançar o local da rede")
+    except RuntimeError:
+        tkinter.messagebox.showerror("Arara", "Não é possível utilizar este comando!")
 
 
 # Função que envia os valores do gamepad a placa
@@ -206,52 +209,62 @@ async def quit_tk():
 
 # Janela principal
 root = tk.Tk()
-root.configure(background="#d3d3d3", highlightthickness=0)
+root.configure(background=constants.Janela.BACKGROUND, highlightthickness=constants.Janela.HIGHTLIGHTTHICKNESS)
+# Define o tamanho da janela e o título
+root.geometry(constants.Janela.SIZE)
+root.resizable(False, False)
+root.title(constants.Janela.TITLE)
 
 # Imagens utilizadas no aplicativo
 on = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/on.png")
 off = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/off.png")
 arara = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/arara.png")
-arara_logo = tk.PhotoImage(file=(caminho_projeto + "Codes\\imagens/arara_logo.png"))
+arara_logo = tk.PhotoImage(file=(caminho_projeto + "Codes\\imagens/arara_icon.png"))
+arara_text = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/arara_text.png")
 wifi_icon = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/wifi.png")
 exit_icon = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/exit.png")
 transferir_icon = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/transferir.png")
 gamepad_icon_off = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/gamepadoff.png")
 gamepad_icon_on = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/gamepadon.png")
-imagem_gamepad = tk.Label(root, image=gamepad_icon_off, background="#d3d3d3")
-imagem_gamepad.place(x=350, y=350)
+
+imagem_gamepad = tk.Label(root, image=gamepad_icon_off, background=constants.GamepadLabel.BACKGROUND)
+imagem_gamepad.place(x=constants.GamepadLabel.POSICAO_X, y=constants.GamepadLabel.POSICAO_Y)
+
+canvas = tk.Canvas(root, width=constants.MenuBar.WIDTH, height=constants.MenuBar.HEIGHT,
+                   background=constants.MenuBar.BACKGROUND,
+                   highlightthickness=constants.MenuBar.HIGHTLIGHTTHICKNESS,
+                   highlightcolor=constants.MenuBar.HIGHLIGHT_COLOUR)
+canvas.place(y=constants.MenuBar.POSICAO_Y, x=constants.MenuBar.POSICAO_X)
+
+imagem_al = tk.Label(canvas, image=arara_logo, bg=constants.AraraLogo.BACKGROUND)
+imagem_al.place(x=constants.AraraLogo.POSICAO_X_IMAGEM, y=constants.AraraLogo.POSICAO_Y_IMAGEM)
+imagem_text = tk.Label(canvas, image=arara_text, bg=constants.AraraLogo.BACKGROUND)
+imagem_text.place(x=constants.AraraLogo.POSICAO_X_TEXT, y=constants.AraraLogo.POSICAO_Y_TEXT)
+
 root.iconphoto(True, arara)
-canvas = tk.Canvas(root, width=470, height=100, background="#787878", highlightthickness=0, highlightcolor='black')
-canvas.place(y=0, x=-5)
-imagem_al = tk.Label(canvas, image=arara_logo, bg='#5c0a5c')
-imagem_al.place(x=40, y=20)
-canvas.create_rectangle(0, 0, 470, 100, fill='#5c0a5c')
-text_stemos = tk.Label(text='stemOS', font=('Roboto', 45), fg='#fff', bg='#5c0a5c', width=10, highlightthickness=0)
-text_stemos.place(y=10, x=150)
-# Cria os botões de conexão e upload
-button_connect = tk.Button(root, image=wifi_icon, command=connect_thread, width=80, highlightthickness=0,
-                           borderwidth=0, bg="#d3d3d3")
-button_connect.place(x=25, y=150)
-button_upload = tk.Button(root, image=transferir_icon, command=CodeJanela, highlightthickness=0, width=80,
-                          borderwidth=0, bg="#d3d3d3")
-button_upload.place(x=25, y=250)
-
-# Cria o botão de enable mas não mostra
-button_enable = tk.Button(root, image=off, command=toggle, highlightthickness=0)
-
-# status = tkinter.Label(root, text="Arara não conectada a Driver Station", font=("Helvetica", 13), fg="gray")
-# status.grid(column=1, row=0, padx=50, pady=20)
-
-# Define o tamanho da janela e o título
-root.geometry("450x450")
-root.resizable(False, False)
-root.title('Arara v1.2')
 
 # Botão de desconexão
-button_exit = tk.Button(root, image=exit_icon, command=close_dashboard, width=70,
-                        highlightthickness=0, borderwidth=0, bg="#d3d3d3")
-button_exit.place(x=30, y=350)
-threading.Thread(target=gamepad_events, daemon=True).start()
+button_exit = tk.Button(root, image=exit_icon, command=close_dashboard,
+                        highlightthickness=constants.ButtonExit.HIGHTLIGHTTHICKNESS,
+                        borderwidth=constants.ButtonExit.BORDER_WIDTH,
+                        bg=constants.ButtonExit.BACKGROUND)
+button_exit.place(x=constants.ButtonExit.POSICAO_X, y=constants.ButtonExit.POSICAO_Y)
+# Cria os botões de conexão e upload
+button_connect = tk.Button(root, image=wifi_icon, command=connect_thread, highlightthickness=0,
+                           borderwidth=0, bg=constants.ButtonConnect.BACKGROUND)
+button_connect.place(x=constants.ButtonConnect.POSICAO_X, y=constants.ButtonConnect.POSICAO_Y)
+button_upload = tk.Button(root, image=transferir_icon, command=CodeJanela, highlightthickness=0,
+                          borderwidth=0, bg=constants.ButtonUpload.BACKGROUND)
+button_upload.place(x=constants.ButtonUpload.POSICAO_X, y=constants.ButtonUpload.POSICAO_Y)
+
+# Cria o botão de enable mas não mostra
+button_enable = tk.Button(root, image=off, command=toggle, highlightthickness=0,
+                          bg=constants.ButtonEnable.BACKGROUND, borderwidth=0)
+
+
+
+thread_gamepad = threading.Thread(target=gamepad_events, daemon=True)
+thread_gamepad.start()
 # Loop do tkinter e tk-async
 tae.start()
 root.protocol("WM_DELETE_WINDOW", close_dashboard)

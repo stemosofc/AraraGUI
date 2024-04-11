@@ -1,5 +1,6 @@
 import json
 import pygame
+from pygame.joystick import JoystickType
 
 # Inicia o módulo do pygame
 pygame.init()
@@ -12,15 +13,15 @@ joystick_habilitado = False
 
 def event_gamepad():
     global joystick_habilitado
+    global joysticks
     for event in pygame.event.get():
         if event.type == pygame.JOYDEVICEADDED:
             joy = pygame.joystick.Joystick(event.device_index)
             joysticks.append(joy)
-            print("Habilitador")
             joystick_habilitado = True
         if event.type == pygame.JOYDEVICEREMOVED:
+            joysticks = []
             joystick_habilitado = False
-            print("AAAAA")
             pass
     return joystick_habilitado
 
