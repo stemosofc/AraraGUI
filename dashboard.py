@@ -60,7 +60,7 @@ class CodeJanela(tk.Toplevel):
     def __init__(self, master=None):
         super().__init__(master=master)
         self.title("Códigos")
-        self.configure(background="#d3d3d3", highlightthickness=0)
+        self.configure(background="#1a1a1a", highlightthickness=0)
         self.geometry("200x200")
         self.resizable(False, False)
         self.listbox_codes = tk.Listbox(self, height=5, selectmode="SINGLE", highlightthickness=0)
@@ -127,8 +127,6 @@ async def send_gamepad_values():
                 tkinter.messagebox.showerror("Arara", "Placa desconectada! Verifique o WiFi!")
                 conectado = False
                 break
-    global c
-    c = 0
 
 
 # Função que inicia uma co-rotina para obter os valores do gamepad
@@ -150,7 +148,6 @@ async def switch():
         button_enable.config(image=off)
         is_on = True
         try:
-            await asyncio.sleep(0.05)
             await connectarara.senddisable()
         except AssertionError as msg:
             print(msg)
@@ -249,19 +246,22 @@ button_exit = tk.Button(root, image=exit_icon, command=close_dashboard,
                         borderwidth=constants.ButtonExit.BORDER_WIDTH,
                         bg=constants.ButtonExit.BACKGROUND)
 button_exit.place(x=constants.ButtonExit.POSICAO_X, y=constants.ButtonExit.POSICAO_Y)
+
 # Cria os botões de conexão e upload
-button_connect = tk.Button(root, image=wifi_icon, command=connect_thread, highlightthickness=0,
-                           borderwidth=0, bg=constants.ButtonConnect.BACKGROUND)
+button_connect = tk.Button(root, image=wifi_icon, command=connect_thread,
+                           highlightthickness=constants.ButtonConnect.HIGHTLIGHTTHICKNESS,
+                           borderwidth=constants.ButtonConnect.BORDER_WIDTH, bg=constants.ButtonConnect.BACKGROUND)
 button_connect.place(x=constants.ButtonConnect.POSICAO_X, y=constants.ButtonConnect.POSICAO_Y)
-button_upload = tk.Button(root, image=transferir_icon, command=CodeJanela, highlightthickness=0,
-                          borderwidth=0, bg=constants.ButtonUpload.BACKGROUND)
+
+button_upload = tk.Button(root, image=transferir_icon, command=CodeJanela,
+                          highlightthickness=constants.ButtonUpload.HIGHTLIGHTTHICKNESS,
+                          borderwidth=constants.ButtonConnect.BORDER_WIDTH, bg=constants.ButtonUpload.BACKGROUND)
 button_upload.place(x=constants.ButtonUpload.POSICAO_X, y=constants.ButtonUpload.POSICAO_Y)
 
 # Cria o botão de enable mas não mostra
-button_enable = tk.Button(root, image=off, command=toggle, highlightthickness=0,
-                          bg=constants.ButtonEnable.BACKGROUND, borderwidth=0)
-
-
+button_enable = tk.Button(root, image=off, command=toggle,
+                          highlightthickness=constants.ButtonEnable.HIGHTLIGHTTHICKNESS,
+                          bg=constants.ButtonEnable.BACKGROUND, borderwidth=constants.ButtonConnect.BORDER_WIDTH)
 
 thread_gamepad = threading.Thread(target=gamepad_events, daemon=True)
 thread_gamepad.start()

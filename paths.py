@@ -25,9 +25,9 @@ def returnpath_exe(name):
     comando = (r'cmd /c "_internal\Codes\esptool.exe '
                r'--before default_reset --after hard_reset write_flash  -z '
                r'--flash_mode dio 0x1000 ' + path + '.ino'
-               r'--chip esp32 --baud 921600  --before default_reset --after hard_reset write_flash  -z '
-               r'--flash_mode dio --flash_freq 80m --flash_size 4MB 0x1000 ' + path + '.ino'
-               r'.bin"')
+                                                    r'--chip esp32 --baud 921600  --before default_reset --after hard_reset write_flash  -z '
+                                                    r'--flash_mode dio --flash_freq 80m --flash_size 4MB 0x1000 ' + path + '.ino'
+                                                                                                                           r'.bin"')
     return comando
 
 
@@ -54,17 +54,37 @@ def auto_command(name, caminho=""):
     path = caminho + 'Codes\\' + name + '/' + name
     memory = [" 0x1000 ", " 0x8000 ", " 0xe000 ", " 0x10000 "]
     comando = (caminho_esptoolexe + r' --baud 921600 --before default_reset --after hard_reset write_flash  -z '
-               r'--flash_mode dio' + memory[0] + path + '.ino'
-               r'.bootloader.bin' + memory[1] + path + '.ino.partitions.bin' +
+                                    r'--flash_mode dio' + memory[0] + path + '.ino'
+                                                                             r'.bootloader.bin' + memory[
+                   1] + path + '.ino.partitions.bin' +
                memory[2] + caminho_tool_esp32 + memory[3] + path + '.ino.bin')
     return comando
 
 
+def auto_command_platformio(name="", caminho=""):
+    memory = [" 0x1000 ", " 0x8000 ", " 0xe000 ", " 0x10000 "]
+    comando = (r"Codes\esptool.exe --baud 921600 "
+               r"--before default_reset --after hard_reset write_flash -z --flash_mode dio "
+               r"--flash_size 16MB" + memory[0] +
+               r" C:\Users\enzo\OneDrive\Documentos\PlatformIO\Projects\AraraPlaca\.pio\build"
+               r"\esp32dev\bootloader.bin" + memory[1] +
+               r"C:\Users\enzo\OneDrive\Documentos\PlatformIO\Projects\AraraPlaca\.pio\build\esp32dev\partitions.bin" +
+                memory[2] + r"C:\Users\enzo\.platformio\packages\framework-arduinoespressif32\tools\partitions\boot_app0"
+               r".bin 0x10000 C:\Users\enzo\OneDrive\Documentos\PlatformIO\Projects\AraraPlaca\.pio\build\esp32dev"
+               r"\firmware.bin")
+    return comando
+
+
 # Função que faz flash do código na placa e retorna um resultado
-def flash_code_arara(name, caminho=""):
+def flash_code_arara(name="", caminho=""):
     result = auto_command(name, caminho)
     result_command = subprocess.run(result.split(), capture_output=True, text=True)
     return found_error(result_command.stdout)
+
+
+def flash_code_arara_platform(name="", caminho=""):
+    result = auto_command_platformio(name, caminho)
+    subprocess.run(result.split())
 
 
 # Função que retorna se algum erro ocorreu ou se o código foi upado com sucesso
@@ -73,3 +93,4 @@ def found_error(output):
         return "Fatal Exception"
     else:
         return "Flash"
+

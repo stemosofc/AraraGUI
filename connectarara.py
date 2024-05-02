@@ -13,7 +13,7 @@ logger.addHandler(logging.StreamHandler())
 # Cria o objeto de websockets
 async def connect_wifi():
     global ws
-    ws = await websockets.connect('ws://192.168.4.1', ping_interval=None)
+    ws = await websockets.connect('ws://192.168.4.1/ws', ping_interval=None)
     await asyncio.sleep(0.010)
 
 

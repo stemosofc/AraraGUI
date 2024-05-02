@@ -1,6 +1,5 @@
 import json
 import pygame
-from pygame.joystick import JoystickType
 
 # Inicia o módulo do pygame
 pygame.init()

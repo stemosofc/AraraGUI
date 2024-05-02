@@ -17,24 +17,31 @@ class ButtonConnect:
     POSICAO_X = 13
     POSICAO_Y = 200
     BACKGROUND = "#1a1a1a"
+    HIGHTLIGHTTHICKNESS = 0
+    BORDER_WIDTH = 0
 
 
 class ButtonUpload:
     POSICAO_Y = 200
     POSICAO_X = 162
     BACKGROUND = "#1a1a1a"
+    HIGHTLIGHTTHICKNESS = 0
+    BORDER_WIDTH = 0
 
 
 class ButtonEnable:
     POSICAO_y = 120
     POSICAO_X = 162
     BACKGROUND = "#1a1a1a"
+    HIGHTLIGHTTHICKNESS = 0
+    BORDER_WIDTH = 0
 
 
 class GamepadLabel:
     POSICAO_Y = 284
     POSICAO_X = 111
     BACKGROUND = "#1a1a1a"
+    HIGHTLIGHTTHICKNESS = 0
 
 
 class MenuBar:
