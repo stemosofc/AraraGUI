@@ -29,7 +29,7 @@ else:
 # Lista que possui todos os códigos que podem ser executados na placa
 # Caso for adicionar uma nova pasta, lembre-se de colocar nessa lista o nome exato do diretório que possui o binário do
 # código c++
-item_listbox = ["ArcadeDrive", "Mecanum", "Teste", "Print"]
+item_listbox = ["ArcadeDrive", "Mecanum", "Test", "Print"]
 
 # Cria um objeto de loop principal, necessário para rodar todas partes do programa em um único gerenciador
 runner = asyncio.Runner()
@@ -124,7 +124,9 @@ async def send_gamepad_values():
                 await asyncio.sleep(0.025)  # Espera 25ms
             except connectarara.return_error_closed():
                 # Caso a conexão caia mostra o seguinte aviso
-                tkinter.messagebox.showerror("Arara", "Placa desconectada! Verifique o WiFi!")
+                tkinter.messagebox.showerror(constants.AraraError.TITLE,
+                                             constants.AraraError.GAMEPAD_WIFI_DISCONNECT)
+                await connectarara.disconnect_wifi()
                 conectado = False
                 break
 
@@ -138,19 +140,21 @@ def handler():
 async def switch():
     global is_on
     if is_on:
-        button_enable.config(image=on)
-        is_on = False
         try:
             await connectarara.sendenable()
-        except AssertionError as msg:
-            print(msg)
+            button_enable.config(image=on)
+            is_on = False
+        except connectarara.return_error_closed():
+            tkinter.messagebox.showerror(constants.AraraError.TITLE,
+                                         constants.AraraError.MESSAGE_WIFI_DISCONNECT)
     else:
-        button_enable.config(image=off)
-        is_on = True
         try:
             await connectarara.senddisable()
-        except AssertionError as msg:
-            print(msg)
+            button_enable.config(image=off)
+            is_on = True
+        except connectarara.return_error_closed():
+            tkinter.messagebox.showerror(constants.AraraError.TITLE,
+                                         constants.AraraError.MESSAGE_WIFI_DISCONNECT)
 
 
 def switch_handler():

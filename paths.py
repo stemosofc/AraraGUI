@@ -1,90 +1,44 @@
-import os
 import subprocess
+from constants import AraraUpload as Upload
 
 
-# This is the function used in Arara V1.0
-def returnpath_py(name):
-    caminho_tool_esp32 = 'Codes/boot_app0.bin '
-    path = 'Codes\\' + name + '/' + name
-    esptool_name = 'esptool'
-    caminho_diretorio = os.path.abspath('_internal')
-    comando = (r'cmd /c "cd ' + caminho_diretorio + ' & python -m ' + esptool_name +
-               ' --before default_reset --after hard_reset '
-               r'write_flash -z --flash_mode '
-               r'dio '
-               r'--flash_freq 80m 0x1000 ' + path +
-               r'.ino.bootloader.bin 0x8000 ' + path +
-               r'.ino.partitions.bin 0xe000 ' + caminho_tool_esp32 + '0x10000 ' + path + r'.ino.bin"')
-    return comando
-
-
-# This is function used in Arara V1.1
-def returnpath_exe(name):
-    caminho_tool_esp32 = '_internal\\Codes/boot_app0.bin '
-    path = '_internal\\Codes\\' + name + '/' + name
-    comando = (r'cmd /c "_internal\Codes\esptool.exe '
-               r'--before default_reset --after hard_reset write_flash  -z '
-               r'--flash_mode dio 0x1000 ' + path + '.ino'
-                                                    r'--chip esp32 --baud 921600  --before default_reset --after hard_reset write_flash  -z '
-                                                    r'--flash_mode dio --flash_freq 80m --flash_size 4MB 0x1000 ' + path + '.ino'
-                                                                                                                           r'.bin"')
-    return comando
-
-
-# This function is used in Arara v1.1.2
-def returnpath_exe_auto(name, caminho=""):
-    caminho_tool_esp32 = caminho + 'Codes/boot_app0.bin '
-    caminho_esptoolexe = caminho + "Codes\\esptool.exe"
-    path = caminho + 'Codes\\' + name + '/' + name
-    memory = [" 0x1000 ", " 0x8000 ", " 0xe000 ", " 0x10000 "]
-    comando = (r'cmd /c "' + caminho_esptoolexe +
-               r' --before default_reset --after hard_reset write_flash  -z '
-               r'--flash_mode dio' + memory[0] + path + '.ino'
-                                                        r'.bootloader.bin' + memory[1] + path + '.ino'
-                                                                                                r'.partitions.bin' +
-               memory[2] + caminho_tool_esp32 + memory[3] + path + '.ino'
-                                                                   r'.bin"')
-    return comando
-
-
-# Função que cria o comando que deve ser executado no terminal
+# Função que faz upload de arquivos .ino
 def auto_command(name, caminho=""):
-    caminho_tool_esp32 = caminho + 'Codes/boot_app0.bin '
-    caminho_esptoolexe = caminho + "Codes\\esptool.exe"
+    caminho_tool_esp32 = caminho + Upload.BOOT_APP
+    caminho_esptoolexe = caminho + Upload.CAMINHO_ESPTOOL_DEV
     path = caminho + 'Codes\\' + name + '/' + name
-    memory = [" 0x1000 ", " 0x8000 ", " 0xe000 ", " 0x10000 "]
-    comando = (caminho_esptoolexe + r' --baud 921600 --before default_reset --after hard_reset write_flash  -z '
-                                    r'--flash_mode dio' + memory[0] + path + '.ino'
-                                                                             r'.bootloader.bin' + memory[
-                   1] + path + '.ino.partitions.bin' +
-               memory[2] + caminho_tool_esp32 + memory[3] + path + '.ino.bin')
+
+    comando = (caminho_esptoolexe + Upload.BAUD + Upload.CONFIG +
+               Upload.MEMORY[0] + path + '.ino.bootloader.bin' +
+               Upload.MEMORY[1] + path + '.ino.partitions.bin' +
+               Upload.MEMORY[2] + caminho_tool_esp32 +
+               Upload.MEMORY[3] + path + '.ino.bin')
+
     return comando
 
 
+# Função que faz upload de arquivos criados no platformio
 def auto_command_platformio(name="", caminho=""):
-    memory = [" 0x1000 ", " 0x8000 ", " 0xe000 ", " 0x10000 "]
-    comando = (r"Codes\esptool.exe --baud 921600 "
-               r"--before default_reset --after hard_reset write_flash -z --flash_mode dio "
-               r"--flash_size 16MB" + memory[0] +
-               r" C:\Users\enzo\OneDrive\Documentos\PlatformIO\Projects\AraraPlaca\.pio\build"
-               r"\esp32dev\bootloader.bin" + memory[1] +
-               r"C:\Users\enzo\OneDrive\Documentos\PlatformIO\Projects\AraraPlaca\.pio\build\esp32dev\partitions.bin" +
-                memory[2] + r"C:\Users\enzo\.platformio\packages\framework-arduinoespressif32\tools\partitions\boot_app0"
-               r".bin 0x10000 C:\Users\enzo\OneDrive\Documentos\PlatformIO\Projects\AraraPlaca\.pio\build\esp32dev"
-               r"\firmware.bin")
+    caminho_esptoolexe = caminho + Upload.CAMINHO_ESPTOOL_DEV
+    caminho_bootapp = caminho + Upload.BOOT_APP
+    caminho_code = caminho + "Codes\\PlatformFiles\\" + name + "\\"
+
+    comando = (caminho_esptoolexe + Upload.BAUD + Upload.CONFIG +
+               Upload.MEMORY[0] + caminho_code + "bootloader.bin" +
+               Upload.MEMORY[1] + caminho_code + "partitions.bin" +
+               Upload.MEMORY[2] + caminho_bootapp +
+               Upload.MEMORY[3] + caminho_code + "firmware.bin")
+
     return comando
 
 
-# Função que faz flash do código na placa e retorna um resultado
-def flash_code_arara(name="", caminho=""):
-    result = auto_command(name, caminho)
+def flash_code_arara(name="", caminho="", ferramenta=""):
+    if ferramenta.lower() == "arduino":
+        result = auto_command(name, caminho)
+    else:
+        result = auto_command_platformio(name, caminho)
     result_command = subprocess.run(result.split(), capture_output=True, text=True)
     return found_error(result_command.stdout)
-
-
-def flash_code_arara_platform(name="", caminho=""):
-    result = auto_command_platformio(name, caminho)
-    subprocess.run(result.split())
 
 
 # Função que retorna se algum erro ocorreu ou se o código foi upado com sucesso
@@ -93,4 +47,3 @@ def found_error(output):
         return "Fatal Exception"
     else:
         return "Flash"
-

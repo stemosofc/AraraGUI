@@ -61,3 +61,25 @@ class AraraLogo:
     BACKGROUND_TEXT = "#ffffff"
     POSICAO_X_TEXT = 75
     POSICAO_Y_TEXT = 22
+
+
+class AraraError:
+    TITLE = "Arara Error"
+    MESSAGE_WIFI_DISCONNECT = "Não é possível utilizar esse comando! Verifique a conexão WiFi"
+    GAMEPAD_WIFI_DISCONNECT = "Placa desconectada! Verifique o WiFi!"
+
+
+class AraraWarnings:
+    pass
+
+
+class Ararainfo:
+    pass
+
+
+class AraraUpload:
+    MEMORY = [" 0x1000 ", " 0x8000 ", " 0xe000 ", " 0x10000 "]
+    CAMINHO_ESPTOOL_DEV = "Codes\\esptool.exe"
+    BAUD = " --baud 921600 "
+    CONFIG = "--before default_reset --after hard_reset write_flash -z --flash_mode dio"
+    BOOT_APP = "Codes\\boot_app0.bin"
