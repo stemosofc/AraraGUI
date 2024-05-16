@@ -1,5 +1,7 @@
 import json
 import pygame
+import connectarara
+import asyncio
 
 # Inicia o módulo do pygame
 pygame.init()
@@ -30,7 +32,7 @@ def return_gamepad():
 
 
 # Retorna a leitura dos gamepad
-def getjson():
+def getgamepadvalues():
     # event handler
 
     for joystick in joysticks:
@@ -56,3 +58,22 @@ def getjson_debugging():
     data = json.dumps(data)
 
     return data
+
+
+def getjson_tester():
+    # event handler
+
+    for joystick in joysticks:
+        # player movement with analogue sticks
+        eixo_esquerdax = round(joystick.get_axis(0), 3)
+        eixo_esquerday = round(joystick.get_axis(1), 3)
+
+        buttona = joystick.get_button(0)  # B
+        buttonb = joystick.get_button(1)  # X
+        buttony = joystick.get_button(3)  # Y
+        buttonx = joystick.get_button(2)  # A
+
+        data = {"LY": eixo_esquerday, "LX": eixo_esquerdax,
+                "B": buttonb, "X": buttonx, "Y": buttony, "A": buttona}
+
+        return data
