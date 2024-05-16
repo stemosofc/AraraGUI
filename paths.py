@@ -6,7 +6,7 @@ from constants import AraraUpload as Upload
 def auto_command(name, caminho=""):
     caminho_tool_esp32 = caminho + Upload.BOOT_APP
     caminho_esptoolexe = caminho + Upload.CAMINHO_ESPTOOL_DEV
-    path = caminho + 'Codes\\' + name + '/' + name
+    path = caminho + 'Codes\\ArduinoFiles' + name + '/' + name
 
     comando = (caminho_esptoolexe + Upload.BAUD + Upload.CONFIG +
                Upload.MEMORY[0] + path + '.ino.bootloader.bin' +
