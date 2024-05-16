@@ -116,10 +116,11 @@ def connect_handler():
 # Função que envia os valores do gamepad a placa
 async def send_gamepad_values():
     global conectado
+    global is_on
     while conectado:  # Verifica se placa está conectada (Loop só fecha quando a janela principal fecha)
-        while not is_on and estado_gamepad:  # Verifica se a o estado do botão está em enable/disable
+        while not is_on:  # Verifica se a o estado do botão está em enable/disable
             try:
-                data = gamepad.getjson()  # Retorna os valores do gamepad (já codificado)
+                data = gamepad.getgamepadvalues()  # Retorna os valores do gamepad (já codificado)
                 await connectarara.sendvalues(data)  # Envia os valores para a placa
                 await asyncio.sleep(0.025)  # Espera 25ms
             except connectarara.return_error_closed():
@@ -127,6 +128,10 @@ async def send_gamepad_values():
                 tkinter.messagebox.showerror(constants.AraraError.TITLE,
                                              constants.AraraError.GAMEPAD_WIFI_DISCONNECT)
                 await connectarara.disconnect_wifi()
+                global c
+                c = 0
+                is_on = True
+                button_enable.config(image=off)
                 conectado = False
                 break
 
