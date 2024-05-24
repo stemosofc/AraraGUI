@@ -1,3 +1,4 @@
+import os
 import subprocess
 from constants import AraraUpload as Upload
 
@@ -47,3 +48,10 @@ def found_error(output):
         return "Fatal Exception"
     else:
         return "Flash"
+
+
+def openterminal():
+    comando = "start prompt"
+    os.system(comando)
+
+

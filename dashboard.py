@@ -272,6 +272,9 @@ button_enable = tk.Button(root, image=off, command=toggle,
                           highlightthickness=constants.ButtonEnable.HIGHTLIGHTTHICKNESS,
                           bg=constants.ButtonEnable.BACKGROUND, borderwidth=constants.ButtonConnect.BORDER_WIDTH)
 
+button_terminal = tk.Button(root, command=paths.openterminal, text="Debug")
+button_terminal.place(x=380, y=410)
+
 thread_gamepad = threading.Thread(target=gamepad_events, daemon=True)
 thread_gamepad.start()
 # Loop do tkinter e tk-async
