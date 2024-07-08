@@ -89,7 +89,7 @@ async def connect():
 
 
 def connected_msg():
-    tkinter.messagebox.showinfo("Arara", "Conexão estabelecida")
+    # tkinter.messagebox.showinfo("Arara", "Conexão estabelecida")
     global conectado
     conectado = True
     # status.config(text="Arara Conectada", fg="green")
@@ -118,7 +118,7 @@ async def send_gamepad_values():
     global conectado
     global is_on
     while conectado:  # Verifica se placa está conectada (Loop só fecha quando a janela principal fecha)
-        while not is_on:  # Verifica se a o estado do botão está em enable/disable
+        while not is_on and estado_gamepad:  # Verifica se a o estado do botão está em enable/disable
             try:
                 data = gamepad.getgamepadvalues()  # Retorna os valores do gamepad (já codificado)
                 await connectarara.sendvalues(data)  # Envia os valores para a placa
@@ -146,7 +146,6 @@ async def switch():
     global is_on
     if is_on:
         try:
-            await connectarara.sendenable()
             button_enable.config(image=on)
             is_on = False
         except connectarara.return_error_closed():
@@ -154,7 +153,6 @@ async def switch():
                                          constants.AraraError.MESSAGE_WIFI_DISCONNECT)
     else:
         try:
-            await connectarara.senddisable()
             button_enable.config(image=off)
             is_on = True
         except connectarara.return_error_closed():

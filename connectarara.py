@@ -13,7 +13,7 @@ logger.addHandler(logging.StreamHandler())
 # Cria o objeto de websockets
 async def connect_wifi():
     global ws
-    ws = await websockets.connect('ws://192.168.4.1/ws', ping_timeout=8)
+    ws = await websockets.connect('ws://192.168.4.1/ws', ping_interval=5)
     await asyncio.sleep(0.010)
 
 
@@ -31,13 +31,13 @@ async def disconnect_wifi():
 
 # Envia enable para a placa
 async def sendenable():
-    mensagem = {"Estado": "Habilitado"}
+    mensagem = {"estado": "h"}
     await ws.send(json.dumps(mensagem))
 
 
 # Envia disable
 async def senddisable():
-    mensagem = {"Estado": "Desabilitado"}
+    mensagem = {"estado": "d"}
     await ws.send(json.dumps(mensagem))
 
 
