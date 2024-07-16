@@ -43,7 +43,8 @@ def flash_code_arara(name="", caminho="", ferramenta=""):
 
 # Função que retorna se algum erro ocorreu ou se o código foi upado com sucesso
 def found_error(output):
-    if "a fatal error occurred:" in output.lower():
+    if "A fatal error occurred" in output:
         return "Fatal Exception"
     else:
         return "Flash"
+

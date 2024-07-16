@@ -29,7 +29,7 @@ else:
 # Lista que possui todos os códigos que podem ser executados na placa
 # Caso for adicionar uma nova pasta, lembre-se de colocar nessa lista o nome exato do diretório que possui o binário do
 # código c++
-item_listbox = ["ArcadeDrive", "Mecanum", "Test", "Print"]
+item_listbox = ["ArcadeDrive"]
 
 # Cria um objeto de loop principal, necessário para rodar todas partes do programa em um único gerenciador
 runner = asyncio.Runner()
@@ -169,7 +169,10 @@ def switch_handler():
 # Função que lança o toggle e inicia a enviar os valores do gamepad
 def toggle():
     global c
-    tae.async_execute(switch(), wait=True, pop_up=False, callback=None, master=root, visible=False)
+    if not conectado:
+        tae.async_execute(switch(), wait=True, pop_up=False, callback=None, master=root, visible=False)
+    else:
+        tkinter.messagebox.showerror("Arara Error", "Não é possivel utilizar esse comando")
     if c == 0:
         thread = threading.Thread(target=handler, daemon=True)
         thread.start()
@@ -188,12 +191,11 @@ def close_dashboard():
 # Função que faz o flash do código para a placa
 async def upload_to_arara():
     if valor != " ":
-        result = paths.flash_code_arara(valor, caminho=caminho_projeto)  # Aqui é feito o comando para upar
-        match result:
-            case "Flash":
-                tkinter.messagebox.showinfo("Arara", "O código foi passado com sucesso!")
-            case "Fatal Exception":
-                tkinter.messagebox.showerror("Arara", "Erro ao dar upload para Arara, tente novamente!")
+        result = paths.flash_code_arara(name=valor, caminho=caminho_projeto)  # Aqui é feito o comando para upar
+        if result == "Flash":
+            tkinter.messagebox.showinfo("Arara", "O código foi passado com sucesso!")
+        if result == "Fatal Exception":
+            tkinter.messagebox.showerror("Arara", "Erro ao dar upload para Arara, tente novamente!")
     else:
         tkinter.messagebox.showwarning("Arara", "Nenhum código foi selecioando!")
 
