@@ -167,7 +167,7 @@ def switch_handler():
 # Função que lança o toggle e inicia a enviar os valores do gamepad
 def toggle():
     global c
-    if not conectado:
+    if conectado:
         tae.async_execute(switch(), wait=True, pop_up=False, callback=None, master=root, visible=False)
     else:
         tkinter.messagebox.showerror("Arara Error", "Não é possivel utilizar esse comando")
