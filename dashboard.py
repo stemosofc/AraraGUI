@@ -50,10 +50,6 @@ def gamepad_events():
             imagem_gamepad.config(image=gamepad_icon_off, highlightthickness=0)
 
 
-def handler_gamepad():
-    pass
-
-
 # Classe que abre uma janela para selecionar um código para dar upload na placa
 class CodeJanela(tk.Toplevel):
 
@@ -81,6 +77,21 @@ class CodeJanela(tk.Toplevel):
         upload_handler()
 
 
+async def pingget():
+    global conectado
+    global c
+    while conectado:
+        try:
+            latency = await connectarara.getping()
+            print(str(latency * 1000) + "ms")
+            await asyncio.sleep(5)
+        except connectarara.return_error_closed():
+            tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
+            conectado = False
+            c = 0
+            button_enable.config(image=off)
+
+
 async def connect():
     await connectarara.connect_wifi()
     await asyncio.sleep(0.02)
@@ -89,7 +100,7 @@ async def connect():
 
 
 def connected_msg():
-    # tkinter.messagebox.showinfo("Arara", "Conexão estabelecida")
+    tkinter.messagebox.showinfo("Arara", "Conexão estabelecida")
     global conectado
     conectado = True
     # status.config(text="Arara Conectada", fg="green")
@@ -103,6 +114,7 @@ def connect_thread():
 def connect_handler():
     try:
         runner.run(connect())
+        runner.run(pingget())
     except TimeoutError:
         tkinter.messagebox.showerror("Arara", "Timeout error")
     except ConnectionAbortedError:
@@ -117,6 +129,7 @@ def connect_handler():
 async def send_gamepad_values():
     global conectado
     global is_on
+    global c
     while conectado:  # Verifica se placa está conectada (Loop só fecha quando a janela principal fecha)
         while not is_on and estado_gamepad:  # Verifica se a o estado do botão está em enable/disable
             try:
@@ -124,21 +137,21 @@ async def send_gamepad_values():
                 await connectarara.sendvalues(data)  # Envia os valores para a placa
                 await asyncio.sleep(0.025)  # Espera 25ms
             except connectarara.return_error_closed():
-                # Caso a conexão caia mostra o seguinte aviso
-                tkinter.messagebox.showerror(constants.AraraError.TITLE,
-                                             constants.AraraError.GAMEPAD_WIFI_DISCONNECT)
-                await connectarara.disconnect_wifi()
-                global c
-                c = 0
-                is_on = True
-                button_enable.config(image=off)
+                tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
                 conectado = False
-                break
+                c = 0
+                button_enable.config(image=off)
+        await asyncio.sleep(1)
+
+
+def handler():
+    runner.run(send_gamepad_values())
 
 
 # Função que inicia uma co-rotina para obter os valores do gamepad
-def handler():
-    runner.run(send_gamepad_values())
+async def handlergamepadping():
+    # await asyncio.gather(send_gamepad_values(), pingget())
+    pass
 
 
 # Função toggle que define o estado do botão Enable/Disable
@@ -160,21 +173,16 @@ async def switch():
                                          constants.AraraError.MESSAGE_WIFI_DISCONNECT)
 
 
-def switch_handler():
-    pass
-
-
 # Função que lança o toggle e inicia a enviar os valores do gamepad
 def toggle():
     global c
     if conectado:
-        tae.async_execute(switch(), wait=True, pop_up=False, callback=None, master=root, visible=False)
+        tae.async_execute(switch(), wait=True, pop_up=True, callback=None, master=root)
     else:
         tkinter.messagebox.showerror("Arara Error", "Não é possivel utilizar esse comando")
     if c == 0:
-        thread = threading.Thread(target=handler, daemon=True)
-        thread.start()
-        c += 1
+        threading.Thread(target=handler, daemon=True).start()
+        c = 1
 
 
 # Função que fecha o dashboard
