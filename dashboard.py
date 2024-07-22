@@ -118,7 +118,8 @@ def connect_thread():
 def connect_handler():
     try:
         runner.run(connect())
-        runner.run(pingget())
+        if conectado:
+            runner.run(pingget())
     except TimeoutError:
         tkinter.messagebox.showerror("Arara", "Timeout error")
     except ConnectionAbortedError:
