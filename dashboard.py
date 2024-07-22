@@ -80,6 +80,7 @@ class CodeJanela(tk.Toplevel):
 async def pingget():
     global conectado
     global c
+    global is_on
     while conectado:
         try:
             latency = await connectarara.getping()
@@ -88,8 +89,10 @@ async def pingget():
         except connectarara.return_error_closed():
             tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
             conectado = False
+            is_on = True
             c = 0
             button_enable.config(image=off)
+            break
 
 
 async def connect():
@@ -103,7 +106,7 @@ def connected_msg():
     tkinter.messagebox.showinfo("Arara", "Conexão estabelecida")
     global conectado
     conectado = True
-    # status.config(text="Arara Conectada", fg="green")
+    label_connection.config(text="Arara Conectada", fg="green")
 
 
 def connect_thread():
@@ -139,8 +142,10 @@ async def send_gamepad_values():
             except connectarara.return_error_closed():
                 tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
                 conectado = False
+                is_on = True
                 c = 0
                 button_enable.config(image=off)
+                break
         await asyncio.sleep(1)
 
 
@@ -279,6 +284,9 @@ button_upload.place(x=constants.ButtonUpload.POSICAO_X, y=constants.ButtonUpload
 button_enable = tk.Button(root, image=off, command=toggle,
                           highlightthickness=constants.ButtonEnable.HIGHTLIGHTTHICKNESS,
                           bg=constants.ButtonEnable.BACKGROUND, borderwidth=constants.ButtonConnect.BORDER_WIDTH)
+
+label_connection = tk.Label(root, text="Não conectado", fg="red", bg="#1a1a1a", font=("Roboto", 16))
+label_connection.place(x=30, y=410)
 
 thread_gamepad = threading.Thread(target=gamepad_events, daemon=True)
 thread_gamepad.start()
