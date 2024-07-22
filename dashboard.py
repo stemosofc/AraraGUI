@@ -88,6 +88,7 @@ async def pingget():
             await asyncio.sleep(5)
         except connectarara.return_error_closed():
             tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
+            label_connection.config(text="Não conectado", fg="red")
             conectado = False
             is_on = True
             c = 0
@@ -141,6 +142,7 @@ async def send_gamepad_values():
                 await asyncio.sleep(0.025)  # Espera 25ms
             except connectarara.return_error_closed():
                 tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
+                label_connection.config(text="Não conectado", fg="red")
                 conectado = False
                 is_on = True
                 c = 0
