@@ -84,7 +84,6 @@ async def pingget():
     while conectado:
         try:
             latency = await connectarara.getping()
-            print(str(latency * 1000) + "ms")
             await asyncio.sleep(5)
         except connectarara.return_error_closed():
             tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
