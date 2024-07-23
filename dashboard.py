@@ -50,7 +50,6 @@ def gamepad_events():
             imagem_gamepad.config(image=gamepad_icon_off, highlightthickness=0)
 
 
-<<<<<<< HEAD
 class WindowTest(tk.Toplevel):
 
     def __init__(self, master=None):
@@ -64,9 +63,6 @@ class WindowTest(tk.Toplevel):
         self.canva.pack(fill="both", expand=True)
         self.canva.create_image(0, 0, image=self.imagem, anchor="nw")
 
-
-=======
->>>>>>> feat-ping
 # Classe que abre uma janela para selecionar um código para dar upload na placa
 class CodeJanela(tk.Toplevel):
 
