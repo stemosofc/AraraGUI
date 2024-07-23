@@ -29,7 +29,7 @@ else:
 # Lista que possui todos os códigos que podem ser executados na placa
 # Caso for adicionar uma nova pasta, lembre-se de colocar nessa lista o nome exato do diretório que possui o binário do
 # código c++
-item_listbox = ["ArcadeDrive"]
+item_listbox = ["ArcadeDrive", "Test"]
 
 # Cria um objeto de loop principal, necessário para rodar todas partes do programa em um único gerenciador
 runner = asyncio.Runner()
@@ -50,8 +50,18 @@ def gamepad_events():
             imagem_gamepad.config(image=gamepad_icon_off, highlightthickness=0)
 
 
-def handler_gamepad():
-    pass
+class WindowTest(tk.Toplevel):
+
+    def __init__(self, master=None):
+        super().__init__(master=master)
+        self.title("Esquema de funcionamento")
+        imagem = tk.PhotoImage(file="Codes/imagens/test.png")
+        self.configure(background="#1a1a1a", highlightthickness=0)
+        self.geometry("750x750")
+        self.resizable(False, False)
+        canva = tk.Canvas(self, width=700, height=700)
+        canva.pack(fill="both", expand=True)
+        canva.create_image(0, 0, image=imagem, anchor="nw")
 
 
 # Classe que abre uma janela para selecionar um código para dar upload na placa
@@ -78,6 +88,8 @@ class CodeJanela(tk.Toplevel):
         curse_selection = self.listbox_codes.curselection()
         if curse_selection:
             valor = self.listbox_codes.get(curse_selection)
+        if valor == "Test":
+            WindowTest()
         upload_handler()
 
 
