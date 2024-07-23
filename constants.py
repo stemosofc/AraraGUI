@@ -1,7 +1,7 @@
 class Janela:
     SIZE = "450x450"
     BACKGROUND = "#1a1a1a"
-    TITLE = 'Arara v1.3'
+    TITLE = 'Arara v2.0'
     HIGHTLIGHTTHICKNESS = 0
 
 
