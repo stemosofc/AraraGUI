@@ -55,13 +55,13 @@ class WindowTest(tk.Toplevel):
     def __init__(self, master=None):
         super().__init__(master=master)
         self.title("Esquema de funcionamento")
-        imagem = tk.PhotoImage(file="Codes/imagens/test.png")
+        self.imagem = tk.PhotoImage(file="Codes/imagens/test.png")
         self.configure(background="#1a1a1a", highlightthickness=0)
-        self.geometry("750x750")
+        self.geometry("750x600")
         self.resizable(False, False)
-        canva = tk.Canvas(self, width=700, height=700)
-        canva.pack(fill="both", expand=True)
-        canva.create_image(0, 0, image=imagem, anchor="nw")
+        self.canva = tk.Canvas(self, width=700, height=700)
+        self.canva.pack(fill="both", expand=True)
+        self.canva.create_image(0, 0, image=self.imagem, anchor="nw")
 
 
 # Classe que abre uma janela para selecionar um código para dar upload na placa
@@ -88,8 +88,6 @@ class CodeJanela(tk.Toplevel):
         curse_selection = self.listbox_codes.curselection()
         if curse_selection:
             valor = self.listbox_codes.get(curse_selection)
-        if valor == "Test":
-            WindowTest()
         upload_handler()
 
 
