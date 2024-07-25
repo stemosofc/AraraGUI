@@ -5,9 +5,8 @@ import constants
 import gamepad
 import paths
 import threading
-import connectarara
+import arara
 import tk_async_execute as tae
-import os
 
 # Variável que indica a conexão com a placa
 conectado = False
@@ -18,24 +17,11 @@ is_on = True
 # Variável que controla qual código será instalado na placa
 valor = " "
 
-# Controle de caminho: Verifica se estamos executando o programa direto na IDE e organiza o caminho relativo dos
-# arquivos É útil para debugar o programa
-caminho_projeto = os.path.abspath('dashboard.py').lower()
-if '\\araradashboard\\'.lower() in caminho_projeto:
-    caminho_projeto = ""  # String vazia
-else:
-    caminho_projeto = "_internal\\"  # Pyinstaller coloca os arquivos dentr de uma pasta _internal
-
-# Lista que possui todos os códigos que podem ser executados na placa
-# Caso for adicionar uma nova pasta, lembre-se de colocar nessa lista o nome exato do diretório que possui o binário do
-# código c++
-item_listbox = ["ArcadeDrive", "Test"]
-
 # Cria um objeto de loop principal, necessário para rodar todas partes do programa em um único gerenciador
 runner = asyncio.Runner()
 
 # Variável que define se o programa foi aberto
-c = 0
+programOpen = 0
 
 estado_gamepad = False
 
@@ -63,6 +49,7 @@ class WindowTest(tk.Toplevel):
         self.canva.pack(fill="both", expand=True)
         self.canva.create_image(0, 0, image=self.imagem, anchor="nw")
 
+
 # Classe que abre uma janela para selecionar um código para dar upload na placa
 class CodeJanela(tk.Toplevel):
 
@@ -73,7 +60,7 @@ class CodeJanela(tk.Toplevel):
         self.geometry("200x200")
         self.resizable(False, False)
         self.listbox_codes = tk.Listbox(self, height=5, selectmode="SINGLE", highlightthickness=0)
-        for i in item_listbox:
+        for i in paths.codes:
             self.listbox_codes.insert(tk.END, i)  # Indexa todos os elentos a listbox
         self.listbox_codes.pack()
         self.button_upload = tk.Button(self, text="Ok", command=self.upload, highlightthickness=0)
@@ -92,24 +79,24 @@ class CodeJanela(tk.Toplevel):
 
 async def pingget():
     global conectado
-    global c
+    global programOpen
     global is_on
     while conectado:
         try:
-            await connectarara.getping()
+            await arara.getping()
             await asyncio.sleep(5)
-        except connectarara.return_error_closed():
+        except arara.return_error_closed():
             tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
             label_connection.config(text="Não conectado", fg="red")
             conectado = False
             is_on = True
-            c = 0
+            programOpen = 0
             button_enable.config(image=off)
             break
 
 
 async def connect():
-    await connectarara.connect_wifi()
+    await arara.connect_wifi()
     await asyncio.sleep(0.02)
     connected_msg()
     button_enable.place(x=constants.ButtonEnable.POSICAO_X, y=constants.ButtonEnable.POSICAO_y)
@@ -146,19 +133,19 @@ def connect_handler():
 async def send_gamepad_values():
     global conectado
     global is_on
-    global c
+    global programOpen
     while conectado:  # Verifica se placa está conectada (Loop só fecha quando a janela principal fecha)
         while not is_on and estado_gamepad:  # Verifica se a o estado do botão está em enable/disable
             try:
                 data = gamepad.getgamepadvalues()  # Retorna os valores do gamepad (já codificado)
-                await connectarara.sendvalues(data)  # Envia os valores para a placa
+                await arara.sendvalues(data)  # Envia os valores para a placa
                 await asyncio.sleep(0.025)  # Espera 25ms
-            except connectarara.return_error_closed():
+            except arara.return_error_closed():
                 tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
                 label_connection.config(text="Não conectado", fg="red")
                 conectado = False
                 is_on = True
-                c = 0
+                programOpen = 0
                 button_enable.config(image=off)
                 break
         await asyncio.sleep(1)
@@ -168,12 +155,6 @@ def handler():
     runner.run(send_gamepad_values())
 
 
-# Função que inicia uma co-rotina para obter os valores do gamepad
-async def handlergamepadping():
-    # await asyncio.gather(send_gamepad_values(), pingget())
-    pass
-
-
 # Função toggle que define o estado do botão Enable/Disable
 async def switch():
     global is_on
@@ -181,28 +162,28 @@ async def switch():
         try:
             button_enable.config(image=on)
             is_on = False
-        except connectarara.return_error_closed():
+        except arara.return_error_closed():
             tkinter.messagebox.showerror(constants.AraraError.TITLE,
                                          constants.AraraError.MESSAGE_WIFI_DISCONNECT)
     else:
         try:
             button_enable.config(image=off)
             is_on = True
-        except connectarara.return_error_closed():
+        except arara.return_error_closed():
             tkinter.messagebox.showerror(constants.AraraError.TITLE,
                                          constants.AraraError.MESSAGE_WIFI_DISCONNECT)
 
 
 # Função que lança o toggle e inicia a enviar os valores do gamepad
 def toggle():
-    global c
+    global programOpen
     if conectado:
         tae.async_execute(switch(), wait=True, pop_up=True, callback=None, master=root)
     else:
         tkinter.messagebox.showerror("Arara Error", "Não é possivel utilizar esse comando")
-    if c == 0:
+    if programOpen == 0:
         threading.Thread(target=handler, daemon=True).start()
-        c = 1
+        programOpen = 1
 
 
 # Função que fecha o dashboard
@@ -217,9 +198,11 @@ def close_dashboard():
 # Função que faz o flash do código para a placa
 async def upload_to_arara():
     if valor != " ":
-        result = paths.flash_code_arara(name=valor, caminho=caminho_projeto)  # Aqui é feito o comando para upar
+        result = paths.flash_code_arara(name=valor)  # Aqui é feito o comando para upar
         if result == "Flash":
             tkinter.messagebox.showinfo("Arara", "O código foi passado com sucesso!")
+            if valor == "Test":
+                WindowTest()
         if result == "Fatal Exception":
             tkinter.messagebox.showerror("Arara", "Erro ao dar upload para Arara, tente novamente!")
     else:
@@ -238,7 +221,7 @@ async def quit_tk():
     is_on = True
     if conectado:
         conectado = False
-        await connectarara.disconnect_wifi()
+        await arara.disconnect_wifi()
 
 
 # Janela principal
@@ -250,16 +233,16 @@ root.resizable(False, False)
 root.title(constants.Janela.TITLE)
 
 # Imagens utilizadas no aplicativo
-on = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/on.png")
-off = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/off.png")
-arara = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/arara.png")
-arara_logo = tk.PhotoImage(file=(caminho_projeto + "Codes\\imagens/arara_icon.png"))
-arara_text = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/arara_text.png")
-wifi_icon = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/wifi.png")
-exit_icon = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/exit.png")
-transferir_icon = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/transferir.png")
-gamepad_icon_off = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/gamepadoff.png")
-gamepad_icon_on = tk.PhotoImage(file=caminho_projeto + "Codes\\imagens/gamepadon.png")
+on = tk.PhotoImage(file=paths.abpath + "imagens/on.png")
+off = tk.PhotoImage(file=paths.abpath + "imagens/off.png")
+araraimage = tk.PhotoImage(file=paths.abpath + "imagens/arara.png")
+arara_logo = tk.PhotoImage(file=(paths.abpath + "imagens/arara_icon.png"))
+arara_text = tk.PhotoImage(file=paths.abpath + "imagens/arara_text.png")
+wifi_icon = tk.PhotoImage(file=paths.abpath + "imagens/wifi.png")
+exit_icon = tk.PhotoImage(file=paths.abpath + "imagens/exit.png")
+transferir_icon = tk.PhotoImage(file=paths.abpath + "imagens/transferir.png")
+gamepad_icon_off = tk.PhotoImage(file=paths.abpath + "imagens/gamepadoff.png")
+gamepad_icon_on = tk.PhotoImage(file=paths.abpath + "imagens/gamepadon.png")
 
 imagem_gamepad = tk.Label(root, image=gamepad_icon_off, background=constants.GamepadLabel.BACKGROUND)
 imagem_gamepad.place(x=constants.GamepadLabel.POSICAO_X, y=constants.GamepadLabel.POSICAO_Y)
@@ -275,7 +258,7 @@ imagem_al.place(x=constants.AraraLogo.POSICAO_X_IMAGEM, y=constants.AraraLogo.PO
 imagem_text = tk.Label(canvas, image=arara_text, bg=constants.AraraLogo.BACKGROUND)
 imagem_text.place(x=constants.AraraLogo.POSICAO_X_TEXT, y=constants.AraraLogo.POSICAO_Y_TEXT)
 
-root.iconphoto(True, arara)
+root.iconphoto(True, araraimage)
 
 # Botão de desconexão
 button_exit = tk.Button(root, image=exit_icon, command=close_dashboard,

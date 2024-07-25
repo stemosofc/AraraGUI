@@ -1,12 +1,16 @@
+import os.path
 import subprocess
 from constants import AraraUpload as Upload
+
+abpath = os.path.abspath('Codes') + "\\"
+codes = os.listdir(abpath + "\\PlatformFiles")
 
 
 # Função que faz upload de arquivos .ino
 def auto_command(name, caminho=""):
     caminho_tool_esp32 = caminho + Upload.BOOT_APP
     caminho_esptoolexe = caminho + Upload.CAMINHO_ESPTOOL_DEV
-    path = caminho + 'Codes\\ArduinoFiles' + name + '/' + name
+    path = caminho + 'ArduinoFiles' + name + '/' + name
 
     comando = (caminho_esptoolexe + Upload.BAUD + Upload.CONFIG +
                Upload.MEMORY[0] + path + '.ino.bootloader.bin' +
@@ -21,7 +25,7 @@ def auto_command(name, caminho=""):
 def auto_command_platformio(name="", caminho=""):
     caminho_esptoolexe = caminho + Upload.CAMINHO_ESPTOOL_DEV
     caminho_bootapp = caminho + Upload.BOOT_APP
-    caminho_code = caminho + "Codes\\PlatformFiles\\" + name + "\\"
+    caminho_code = caminho + "PlatformFiles\\" + name + "\\"
 
     comando = (caminho_esptoolexe + Upload.BAUD + Upload.CONFIG +
                Upload.MEMORY[0] + caminho_code + "bootloader.bin" +
@@ -32,11 +36,11 @@ def auto_command_platformio(name="", caminho=""):
     return comando
 
 
-def flash_code_arara(name="", caminho="", ferramenta=""):
+def flash_code_arara(name="", ferramenta=""):
     if ferramenta.lower() == "arduino":
-        result = auto_command(name, caminho)
+        result = auto_command(name=name, caminho=abpath)
     else:
-        result = auto_command_platformio(name, caminho)
+        result = auto_command_platformio(name=name, caminho=abpath)
     result_command = subprocess.run(result.split(), capture_output=True, text=True)
     return found_error(result_command.stdout)
 
@@ -47,4 +51,3 @@ def found_error(output):
         return "Fatal Exception"
     else:
         return "Flash"
-
