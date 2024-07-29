@@ -2,6 +2,7 @@ import asyncio
 import tkinter as tk
 import tkinter.messagebox
 import constants
+import errors
 import gamepad
 import paths
 import threading
@@ -83,7 +84,8 @@ async def pingget():
     global is_on
     while conectado:
         try:
-            await arara.getping()
+            latency = await arara.getping()
+            print(round(latency * 1000, 2))
             await asyncio.sleep(5)
         except arara.return_error_closed():
             tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
@@ -198,13 +200,21 @@ def close_dashboard():
 # Função que faz o flash do código para a placa
 async def upload_to_arara():
     if valor != " ":
-        result = paths.flash_code_arara(name=valor)  # Aqui é feito o comando para upar
-        if result == "Flash":
-            tkinter.messagebox.showinfo("Arara", "O código foi passado com sucesso!")
-            if valor == "Test":
-                WindowTest()
-        if result == "Fatal Exception":
-            tkinter.messagebox.showerror("Arara", "Erro ao dar upload para Arara, tente novamente!")
+        try:
+            result = paths.flash_code_arara(name=valor)  # Aqui é feito o comando para upar
+            if result == "Flash":
+                tkinter.messagebox.showinfo("Arara", "O código foi passado com sucesso!")
+                if valor == "Test":
+                    WindowTest()
+        except errors.NoSerialAvaible:
+            tkinter.messagebox.showerror("Arara Error", "Conecte a Arara ao computador!")
+        except errors.NotOpenCOM4:
+            tkinter.messagebox.showerror("Arara Error", "Porta serial não disponível!")
+        except errors.DisconnectDevice:
+            tkinter.messagebox.showerror("Arara Error", "O dispositivo foi desconectado!")
+        except errors.FatalError:
+            tkinter.messagebox.showerror("Arara Error", "Não foi possível passar o código, "
+                                                        "tente novamente!")
     else:
         tkinter.messagebox.showwarning("Arara", "Nenhum código foi selecioando!")
 

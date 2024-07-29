@@ -1,6 +1,7 @@
 import os.path
 import subprocess
 from constants import AraraUpload as Upload
+import errors
 
 abpath = os.path.abspath('Codes') + "\\"
 codes = os.listdir(abpath + "\\PlatformFiles")
@@ -47,7 +48,13 @@ def flash_code_arara(name="", ferramenta=""):
 
 # Função que retorna se algum erro ocorreu ou se o código foi upado com sucesso
 def found_error(output):
-    if "A fatal error occurred" in output:
-        return "Fatal Exception"
-    else:
+    if "Leaving" in output:
         return "Flash"
+    elif "Found 0 serial ports" in output:
+        raise errors.NoSerialAvaible
+    elif "A serial exception error occurred" in output:
+        raise errors.DisconnectDevice
+    elif "A Fatal Error Ocurred" in output:
+        raise errors.FatalError
+    elif "Could not open COM4, the port doesn't exist":
+        raise errors.NotOpenCOM4
