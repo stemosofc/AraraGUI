@@ -215,6 +215,8 @@ async def upload_to_arara():
         except errors.FatalError:
             tkinter.messagebox.showerror("Arara Error", "Não foi possível passar o código, "
                                                         "tente novamente!")
+        except errors.WrongBootMode:
+            tkinter.messagebox.showerror("Arara Error", "Segure o botão BOOT quando for passar o código")
     else:
         tkinter.messagebox.showwarning("Arara", "Nenhum código foi selecioando!")
 
