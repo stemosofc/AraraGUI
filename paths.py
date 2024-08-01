@@ -3,8 +3,13 @@ import subprocess
 from constants import AraraUpload as Upload
 import errors
 
-abpath = os.path.abspath('Codes') + "\\"
-codes = os.listdir(abpath + "\\PlatformFiles")
+direct = os.listdir()
+
+if "_internal" in direct:
+    abpath = os.path.abspath('_internal\\Codes')
+else:
+    abpath = os.path.abspath('Codes')
+codes = os.listdir(os.path.join(abpath, "PlatformFiles"))
 
 
 # Função que faz upload de arquivos .ino
@@ -26,8 +31,7 @@ def auto_command(name, caminho=""):
 def auto_command_platformio(name="", caminho=""):
     caminho_esptoolexe = caminho + Upload.CAMINHO_ESPTOOL_DEV
     caminho_bootapp = caminho + Upload.BOOT_APP
-    caminho_code = caminho + "PlatformFiles\\" + name + "\\"
-
+    caminho_code = caminho + "\\PlatformFiles\\" + name + "\\"
     comando = (caminho_esptoolexe + Upload.BAUD + Upload.CONFIG +
                Upload.MEMORY[0] + caminho_code + "bootloader.bin" +
                Upload.MEMORY[1] + caminho_code + "partitions.bin" +
@@ -42,7 +46,7 @@ def flash_code_arara(name="", ferramenta=""):
         result = auto_command(name=name, caminho=abpath)
     else:
         result = auto_command_platformio(name=name, caminho=abpath)
-    result_command = subprocess.run(result.split(), capture_output=True, text=True)
+    result_command = subprocess.run(result.split(), capture_output=True, text=True, creationflags=0x08000000)
     return found_error(result_command.stdout)
 
 

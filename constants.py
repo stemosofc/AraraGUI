@@ -79,7 +79,7 @@ class Ararainfo:
 
 class AraraUpload:
     MEMORY = [" 0x1000 ", " 0x8000 ", " 0xe000 ", " 0x10000 "]
-    CAMINHO_ESPTOOL_DEV = "esptool.exe"
+    CAMINHO_ESPTOOL_DEV = "\\esptool.exe"
     BAUD = " --baud 921600 "
     CONFIG = "--before default_reset --after hard_reset write_flash -z --flash_mode dio"
-    BOOT_APP = "boot_app0.bin"
+    BOOT_APP = "\\boot_app0.bin"

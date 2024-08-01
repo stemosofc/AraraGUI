@@ -42,7 +42,7 @@ class WindowTest(tk.Toplevel):
     def __init__(self, master=None):
         super().__init__(master=master)
         self.title("Esquema de funcionamento")
-        self.imagem = tk.PhotoImage(file="Codes/imagens/test.png")
+        self.imagem = tk.PhotoImage(file=paths.abpath + "\\imagens/test.png")
         self.configure(background="#1a1a1a", highlightthickness=0)
         self.geometry("750x600")
         self.resizable(False, False)
@@ -89,7 +89,7 @@ async def pingget():
             await asyncio.sleep(5)
         except arara.return_error_closed():
             tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
-            label_connection.config(text="Não conectado", fg="red")
+            imagem_conected.config(image=connect_off)
             conectado = False
             is_on = True
             programOpen = 0
@@ -108,7 +108,7 @@ def connected_msg():
     tkinter.messagebox.showinfo("Arara", "Conexão estabelecida")
     global conectado
     conectado = True
-    label_connection.config(text="Arara Conectada", fg="green")
+    imagem_conected.config(image=connect_on)
 
 
 def connect_thread():
@@ -144,7 +144,7 @@ async def send_gamepad_values():
                 await asyncio.sleep(0.025)  # Espera 25ms
             except arara.return_error_closed():
                 tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
-                label_connection.config(text="Não conectado", fg="red")
+                imagem_conected.config(image=connect_off)
                 conectado = False
                 is_on = True
                 programOpen = 0
@@ -245,19 +245,23 @@ root.resizable(False, False)
 root.title(constants.Janela.TITLE)
 
 # Imagens utilizadas no aplicativo
-on = tk.PhotoImage(file=paths.abpath + "imagens/on.png")
-off = tk.PhotoImage(file=paths.abpath + "imagens/off.png")
-araraimage = tk.PhotoImage(file=paths.abpath + "imagens/arara.png")
-arara_logo = tk.PhotoImage(file=(paths.abpath + "imagens/arara_icon.png"))
-arara_text = tk.PhotoImage(file=paths.abpath + "imagens/arara_text.png")
-wifi_icon = tk.PhotoImage(file=paths.abpath + "imagens/wifi.png")
-exit_icon = tk.PhotoImage(file=paths.abpath + "imagens/exit.png")
-transferir_icon = tk.PhotoImage(file=paths.abpath + "imagens/transferir.png")
-gamepad_icon_off = tk.PhotoImage(file=paths.abpath + "imagens/gamepadoff.png")
-gamepad_icon_on = tk.PhotoImage(file=paths.abpath + "imagens/gamepadon.png")
-
+on = tk.PhotoImage(file=paths.abpath + "\\imagens/on.png")
+off = tk.PhotoImage(file=paths.abpath + "\\imagens/off.png")
+araraimage = tk.PhotoImage(file=paths.abpath + "\\imagens/arara.png")
+arara_logo = tk.PhotoImage(file=(paths.abpath + "\\imagens/arara_icon.png"))
+arara_text = tk.PhotoImage(file=paths.abpath + "\\imagens/arara_text.png")
+wifi_icon = tk.PhotoImage(file=paths.abpath + "\\imagens/wifi.png")
+exit_icon = tk.PhotoImage(file=paths.abpath + "\\imagens/exit.png")
+transferir_icon = tk.PhotoImage(file=paths.abpath + "\\imagens/transferir.png")
+gamepad_icon_off = tk.PhotoImage(file=paths.abpath + "\\imagens/gamepadoff.png")
+gamepad_icon_on = tk.PhotoImage(file=paths.abpath + "\\imagens/gamepadon.png")
+connect_on = tk.PhotoImage(file=paths.abpath + "\\imagens/connecton.png")
+connect_off = tk.PhotoImage(file=paths.abpath + "\\imagens/desconectado.png")
 imagem_gamepad = tk.Label(root, image=gamepad_icon_off, background=constants.GamepadLabel.BACKGROUND)
-imagem_gamepad.place(x=constants.GamepadLabel.POSICAO_X, y=constants.GamepadLabel.POSICAO_Y)
+imagem_gamepad.place(x=20, y=constants.GamepadLabel.POSICAO_Y)
+
+imagem_conected = tk.Label(root, image=connect_off, background=constants.GamepadLabel.BACKGROUND)
+imagem_conected.place(x=270, y=293)
 
 canvas = tk.Canvas(root, width=constants.MenuBar.WIDTH, height=constants.MenuBar.HEIGHT,
                    background=constants.MenuBar.BACKGROUND,
@@ -295,8 +299,6 @@ button_enable = tk.Button(root, image=off, command=toggle,
                           highlightthickness=constants.ButtonEnable.HIGHTLIGHTTHICKNESS,
                           bg=constants.ButtonEnable.BACKGROUND, borderwidth=constants.ButtonConnect.BORDER_WIDTH)
 
-label_connection = tk.Label(root, text="Não conectado", fg="red", bg="#1a1a1a", font=("Roboto", 16))
-label_connection.place(x=30, y=410)
 
 thread_gamepad = threading.Thread(target=gamepad_events, daemon=True)
 thread_gamepad.start()
