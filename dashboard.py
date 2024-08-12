@@ -1,6 +1,7 @@
 import asyncio
 import time
 import tkinter as tk
+import tkinter.ttk
 import tkinter.messagebox
 import constants
 import errors
@@ -38,6 +39,20 @@ def gamepad_events():
         time.sleep(0.02)
 
 
+class Loading(tk.Toplevel):
+
+    def __init__(self, master=None):
+        super().__init__(master=master)
+        self.geometry("100x50")
+        self.progressbar = tkinter.ttk.Progressbar(self, mode="indeterminate")
+        self.progressbar.pack(pady=10)
+        self.progressbar.start()
+
+    def stop(self):
+        self.progressbar.stop()
+        self.destroy()
+
+
 class WindowTest(tk.Toplevel):
 
     def __init__(self, master=None):
@@ -73,11 +88,12 @@ class CodeJanela(tk.Toplevel):
 
     # Função que define qual objeto da lista deve ser instalado
     def upload(self):
+        self.load = Loading()
         global valor
         curse_selection = self.listbox_codes.curselection()
         if curse_selection:
             valor = self.listbox_codes.get(curse_selection)
-        threading.Thread(target=self.upload_to_arara(), daemon=True)
+        threading.Thread(target=self.upload_to_arara, daemon=True).start()
 
     # Função que faz o flash do código para a placa
     def upload_to_arara(self):
@@ -103,6 +119,7 @@ class CodeJanela(tk.Toplevel):
                 tkinter.messagebox.showerror("Arara Error", "Segure o botão BOOT quando for passar o código")
         else:
             tkinter.messagebox.showwarning("Arara", "Nenhum código foi selecioando!")
+        self.load.stop()
 
 
 async def pingget():
