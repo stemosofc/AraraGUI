@@ -1,4 +1,5 @@
 import asyncio
+import time
 import tkinter as tk
 import tkinter.messagebox
 import constants
@@ -7,7 +8,6 @@ import gamepad
 import paths
 import threading
 import arara
-import tk_async_execute as tae
 
 # Variável que indica a conexão com a placa
 conectado = False
@@ -35,6 +35,7 @@ def gamepad_events():
             imagem_gamepad.config(image=gamepad_icon_on, highlightthickness=0)
         else:
             imagem_gamepad.config(image=gamepad_icon_off, highlightthickness=0)
+        time.sleep(0.02)
 
 
 class WindowTest(tk.Toplevel):
@@ -56,6 +57,7 @@ class CodeJanela(tk.Toplevel):
 
     def __init__(self, master=None):
         super().__init__(master=master)
+        self.load = None
         self.title("Códigos")
         self.configure(background="#1a1a1a", highlightthickness=0)
         self.geometry("200x200")
@@ -75,7 +77,32 @@ class CodeJanela(tk.Toplevel):
         curse_selection = self.listbox_codes.curselection()
         if curse_selection:
             valor = self.listbox_codes.get(curse_selection)
-        upload_handler()
+        threading.Thread(target=self.upload_to_arara(), daemon=True)
+
+    # Função que faz o flash do código para a placa
+    def upload_to_arara(self):
+        if valor != " ":
+            try:
+                result = paths.flash_code_arara(name=valor)  # Aqui é feito o comando para upar
+                if result == "Flash":
+                    tkinter.messagebox.showinfo("Arara", "O código foi passado com sucesso!")
+                    if valor == "Test":
+                        WindowTest()
+            except errors.NoSerialAvaible:
+                tkinter.messagebox.showerror("Arara Error", "Conecte a Arara ao computador!")
+            except errors.NotOpenCOM4:
+                tkinter.messagebox.showerror("Arara Error", "Porta serial não disponível!")
+            except errors.DisconnectDevice:
+                tkinter.messagebox.showerror("Arara Error", "O dispositivo foi desconectado!")
+            except errors.FatalError:
+                tkinter.messagebox.showerror("Arara Error", "Não foi possível passar o código, "
+                                                            "tente novamente!")
+            except errors.WrongPath:
+                tkinter.messagebox.showerror("Arara Error", "O caminho dos arquivos não foi encontrado!")
+            except errors.WrongBootMode:
+                tkinter.messagebox.showerror("Arara Error", "Segure o botão BOOT quando for passar o código")
+        else:
+            tkinter.messagebox.showwarning("Arara", "Nenhum código foi selecioando!")
 
 
 async def pingget():
@@ -180,7 +207,7 @@ async def switch():
 def toggle():
     global programOpen
     if conectado:
-        tae.async_execute(switch(), wait=True, pop_up=True, callback=None, master=root)
+        switch()
     else:
         tkinter.messagebox.showerror("Arara Error", "Não é possivel utilizar esse comando")
     if programOpen == 0:
@@ -195,35 +222,6 @@ def close_dashboard():
     finally:
         root.quit()
         runner.close()
-
-
-# Função que faz o flash do código para a placa
-async def upload_to_arara():
-    if valor != " ":
-        try:
-            result = paths.flash_code_arara(name=valor)  # Aqui é feito o comando para upar
-            if result == "Flash":
-                tkinter.messagebox.showinfo("Arara", "O código foi passado com sucesso!")
-                if valor == "Test":
-                    WindowTest()
-        except errors.NoSerialAvaible:
-            tkinter.messagebox.showerror("Arara Error", "Conecte a Arara ao computador!")
-        except errors.NotOpenCOM4:
-            tkinter.messagebox.showerror("Arara Error", "Porta serial não disponível!")
-        except errors.DisconnectDevice:
-            tkinter.messagebox.showerror("Arara Error", "O dispositivo foi desconectado!")
-        except errors.FatalError:
-            tkinter.messagebox.showerror("Arara Error", "Não foi possível passar o código, "
-                                                        "tente novamente!")
-        except errors.WrongBootMode:
-            tkinter.messagebox.showerror("Arara Error", "Segure o botão BOOT quando for passar o código")
-    else:
-        tkinter.messagebox.showwarning("Arara", "Nenhum código foi selecioando!")
-
-
-# Função que chama as funções para dar o upload para a placa
-def upload_handler():
-    tae.async_execute(upload_to_arara(), wait=True, pop_up=True, callback=None, master=root)
 
 
 # Função que desconecta e define as variáveis para fechar o programa
@@ -299,11 +297,8 @@ button_enable = tk.Button(root, image=off, command=toggle,
                           highlightthickness=constants.ButtonEnable.HIGHTLIGHTTHICKNESS,
                           bg=constants.ButtonEnable.BACKGROUND, borderwidth=constants.ButtonConnect.BORDER_WIDTH)
 
-
 thread_gamepad = threading.Thread(target=gamepad_events, daemon=True)
 thread_gamepad.start()
 # Loop do tkinter e tk-async
-tae.start()
 root.protocol("WM_DELETE_WINDOW", close_dashboard)
 root.mainloop()
-tae.stop()

@@ -37,7 +37,7 @@ def auto_command_platformio(name="", caminho=""):
                Upload.MEMORY[1] + caminho_code + "partitions.bin" +
                Upload.MEMORY[2] + caminho_bootapp +
                Upload.MEMORY[3] + caminho_code + "firmware.bin")
-
+    print(comando)
     return comando
 
 
@@ -52,6 +52,7 @@ def flash_code_arara(name="", ferramenta=""):
 
 # Função que retorna se algum erro ocorreu ou se o código foi upado com sucesso
 def found_error(output):
+    print(output)
     if "Leaving" in output:
         return "Flash"
     elif "Found 0 serial ports" in output:
@@ -60,5 +61,12 @@ def found_error(output):
         raise errors.DisconnectDevice
     elif "A Fatal Error Ocurred" in output:
         raise errors.FatalError
-    elif "Could not open COM4, the port doesn't exist":
-        raise errors.NotOpenCOM4
+    elif "Could not open COM" in output:
+        if "Wrong boot mode detected" in output:
+            raise errors.WrongBootMode
+        else:
+            raise errors.NotOpenCOM4
+    elif "No such file or directory" in output:
+        raise errors.WrongPath
+
+

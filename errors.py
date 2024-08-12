@@ -37,3 +37,10 @@ class WrongBootMode(Exception):
     def __init__(self, message="Arara não foi colocada em modo de download"):
         self.message = message
         super().__init__(self.message)
+
+
+class WrongPath(Exception):
+
+    def __init__(self, message="Não existe esse arquivo ou diretório"):
+        self.message = message
+        super().__init__(self.message)
