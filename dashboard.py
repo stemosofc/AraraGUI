@@ -202,7 +202,7 @@ def handler():
 
 
 # Função toggle que define o estado do botão Enable/Disable
-async def switch():
+def switch():
     global is_on
     if is_on:
         try:
