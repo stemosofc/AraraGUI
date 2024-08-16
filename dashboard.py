@@ -155,6 +155,14 @@ def connected_msg():
     imagem_conected.config(image=connect_on)
 
 
+async def gamepadping_async():
+    await asyncio.gather(send_gamepad_values(), pingget())
+
+
+def gamepadping():
+    runner.run(gamepadping_async())
+
+
 def connect_thread():
     threading.Thread(target=connect_handler, daemon=True).start()
 
@@ -162,9 +170,9 @@ def connect_thread():
 # Função que lança uma co-rotina para conectar a placa
 def connect_handler():
     try:
-        runner.run(connect())
-        if conectado:
-            runner.run(pingget())
+        if not conectado:
+            runner.run(connect())
+            threading.Thread(target=gamepadping, daemon=True).start()
     except TimeoutError:
         tkinter.messagebox.showerror("Arara", "Timeout error")
     except ConnectionAbortedError:
@@ -227,9 +235,6 @@ def toggle():
         switch()
     else:
         tkinter.messagebox.showerror("Arara Error", "Não é possivel utilizar esse comando")
-    if programOpen == 0:
-        threading.Thread(target=handler, daemon=True).start()
-        programOpen = 1
 
 
 # Função que fecha o dashboard
