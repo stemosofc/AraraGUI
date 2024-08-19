@@ -36,10 +36,10 @@ def getgamepadvalues():
         eixo_direitax = round(joystick.get_axis(2), 2)
         eixo_direitay = round(joystick.get_axis(3), 2)
 
-        buttona = joystick.get_button(0)  # B
-        buttonb = joystick.get_button(1)  # X
-        buttony = joystick.get_button(3)  # Y
-        buttonx = joystick.get_button(2)  # A
+        buttona = joystick.get_button(0)
+        buttonb = joystick.get_button(1)
+        buttony = joystick.get_button(3)
+        buttonx = joystick.get_button(2)
 
         data = {"LY": eixo_esquerday, "LX": eixo_esquerdax, "RX": eixo_direitax, "RY": eixo_direitay,
                 "B": buttonb, "X": buttonx, "Y": buttony, "A": buttona}
