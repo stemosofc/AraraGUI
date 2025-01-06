@@ -30,7 +30,7 @@ async def disconnect_wifi():
 
 # Envia valores para a placa
 async def sendvalues(mensagem):
-    await ws.send(mensagem)
+    await ws.send(json.dumps(mensagem))
 
 
 # Retorna um erro de queda de conexão

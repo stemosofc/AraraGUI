@@ -1,4 +1,3 @@
-import json
 import pygame
 
 # Inicia o módulo do pygame
@@ -43,6 +42,5 @@ def getgamepadvalues():
 
         data = {"LY": eixo_esquerday, "LX": eixo_esquerdax, "RX": eixo_direitax, "RY": eixo_direitay,
                 "B": buttonb, "X": buttonx, "Y": buttony, "A": buttona}
-        data = json.dumps(data)
 
         return data

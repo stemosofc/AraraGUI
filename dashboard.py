@@ -189,11 +189,12 @@ async def send_gamepad_values():
     global is_on
     global programOpen
     while conectado:  # Verifica se placa está conectada (Loop só fecha quando a janela principal fecha)
-        while not is_on and estado_gamepad:  # Verifica se a o estado do botão está em enable/disable
+        while estado_gamepad:  # Verifica se a o estado do botão está em enable/disable
             try:
                 data = gamepad.getgamepadvalues()  # Retorna os valores do gamepad (já codificado)
+                data["EN"] = not is_on
                 await arara.sendvalues(data)  # Envia os valores para a placa
-                await asyncio.sleep(0.025)  # Espera 25ms
+                await asyncio.sleep(float(current_value.get()) / 1000)  # Espera 25ms
             except arara.return_error_closed():
                 tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
                 imagem_conected.config(image=connect_off)
@@ -319,6 +320,14 @@ button_enable = tk.Button(root, image=off, command=toggle,
                           highlightthickness=constants.ButtonEnable.HIGHTLIGHTTHICKNESS,
                           bg=constants.ButtonEnable.BACKGROUND, borderwidth=constants.ButtonConnect.BORDER_WIDTH)
 
+current_value = tk.StringVar(value=str(25))
+spin_box = tk.Spinbox(
+    root,
+    from_=25,
+    to=200,
+    textvariable=current_value,
+    wrap=True)
+spin_box.place(x=50, y=50)
 thread_gamepad = threading.Thread(target=gamepad_events, daemon=True)
 thread_gamepad.start()
 # Loop do tkinter e tk-async
