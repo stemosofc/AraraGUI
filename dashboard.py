@@ -3,6 +3,9 @@ import time
 import tkinter as tk
 import tkinter.ttk
 import tkinter.messagebox
+
+import websockets.exceptions
+
 import constants
 import errors
 import gamepad
@@ -139,6 +142,14 @@ async def pingget():
             programOpen = 0
             button_enable.config(image=off)
             break
+        except websockets.exceptions.ConnectionClosedOK:
+            tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
+            imagem_conected.config(image=connect_off)
+            conectado = False
+            is_on = True
+            programOpen = 0
+            button_enable.config(image=off)
+            break
 
 
 async def connect():
@@ -182,20 +193,34 @@ def connect_handler():
     except RuntimeError:
         tkinter.messagebox.showerror("Arara", "Não é possível utilizar este comando!")
 
-
+v = 0
 # Função que envia os valores do gamepad a placa
 async def send_gamepad_values():
     global conectado
     global is_on
     global programOpen
+    global v
     while conectado:  # Verifica se placa está conectada (Loop só fecha quando a janela principal fecha)
         while estado_gamepad:  # Verifica se a o estado do botão está em enable/disable
             try:
                 data = gamepad.getgamepadvalues()  # Retorna os valores do gamepad (já codificado)
                 data["EN"] = not is_on
-                await arara.sendvalues(data)  # Envia os valores para a placa
+                if not is_on:
+                    v = 1
+                    await arara.sendvalues(data)  # Envia os valores para a placa
+                if is_on and v == 1:
+                    v = 0
+                    await arara.sendvalues(data)
                 await asyncio.sleep(float(current_value.get()) / 1000)  # Espera 25ms
             except arara.return_error_closed():
+                tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
+                imagem_conected.config(image=connect_off)
+                conectado = False
+                is_on = True
+                programOpen = 0
+                button_enable.config(image=off)
+                break
+            except websockets.exceptions.ConnectionClosedOK:
                 tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
                 imagem_conected.config(image=connect_off)
                 conectado = False
