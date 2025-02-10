@@ -5,16 +5,18 @@ import tkinter.ttk
 import tkinter.messagebox
 
 import websockets.exceptions
-
+from easysteam import EasySteam
 import constants
 import errors
-import gamepad
+from gamepad import Gamepad
 import paths
 import threading
-import arara
+import easysteam
 
-# Variável que indica a conexão com a placa
-conectado = False
+
+easyBoard = EasySteam()
+gamepad = Gamepad()
+runner = asyncio.Runner()
 
 # Variável que controla o switch enable/disable
 is_on = True
@@ -22,24 +24,14 @@ is_on = True
 # Variável que controla qual código será instalado na placa
 valor = " "
 
-# Cria um objeto de loop principal, necessário para rodar todas partes do programa em um único gerenciador
-runner = asyncio.Runner()
-
-# Variável que define se o programa foi aberto
-programOpen = 0
-
-estado_gamepad = False
-
 
 def gamepad_events():
-    global estado_gamepad
-    while True:
-        estado_gamepad = gamepad.event_gamepad()
-        if estado_gamepad:
+    while root.winfo_exists():
+        gamepad.event_gamepad()
+        if gamepad.geteventgamepad():
             imagem_gamepad.config(image=gamepad_icon_on, highlightthickness=0)
         else:
             imagem_gamepad.config(image=gamepad_icon_off, highlightthickness=0)
-        time.sleep(0.02)
 
 
 class Loading(tk.Toplevel):
@@ -126,52 +118,33 @@ class CodeJanela(tk.Toplevel):
 
 
 async def pingget():
-    global conectado
-    global programOpen
     global is_on
-    while conectado:
+    while easyBoard.connection:
         try:
-            latency = await arara.getping()
-            print(round(latency * 1000, 2))
-            await asyncio.sleep(5)
-        except arara.return_error_closed():
-            tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
+            await easyBoard.getping()
+        except:
             imagem_conected.config(image=connect_off)
-            conectado = False
             is_on = True
-            programOpen = 0
             button_enable.config(image=off)
-            break
-        except websockets.exceptions.ConnectionClosedOK:
-            tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
-            imagem_conected.config(image=connect_off)
-            conectado = False
-            is_on = True
-            programOpen = 0
-            button_enable.config(image=off)
-            break
+            easyBoard.wifierror()
 
 
 async def connect():
-    await arara.connect_wifi()
-    await asyncio.sleep(0.02)
+    await easyBoard.connect()
     connected_msg()
     button_enable.place(x=constants.ButtonEnable.POSICAO_X, y=constants.ButtonEnable.POSICAO_y)
 
 
 def connected_msg():
-    tkinter.messagebox.showinfo("Arara", "Conexão estabelecida")
-    global conectado
-    conectado = True
     imagem_conected.config(image=connect_on)
-
-
-async def gamepadping_async():
-    await asyncio.gather(send_gamepad_values(), pingget())
 
 
 def gamepadping():
     runner.run(gamepadping_async())
+
+
+async def gamepadping_async():
+    await asyncio.gather(send_gamepad_values(), pingget())
 
 
 def connect_thread():
@@ -181,58 +154,46 @@ def connect_thread():
 # Função que lança uma co-rotina para conectar a placa
 def connect_handler():
     try:
-        if not conectado:
+        if not easyBoard.connection:
             runner.run(connect())
             threading.Thread(target=gamepadping, daemon=True).start()
     except TimeoutError:
-        tkinter.messagebox.showerror("Arara", "Timeout error")
+        tkinter.messagebox.showerror("EasySTEAM", "Timeout error")
     except ConnectionAbortedError:
-        tkinter.messagebox.showerror("Arara", "A conexão foi anulada pelo sistema")
+        tkinter.messagebox.showerror("EasySTEAM", "A conexão foi anulada pelo sistema")
     except OSError:
-        tkinter.messagebox.showerror("Arara", "Não é possível alcançar o local da rede")
+        tkinter.messagebox.showerror("EasySTEAM", "Não é possível alcançar o local da rede")
     except RuntimeError:
-        tkinter.messagebox.showerror("Arara", "Não é possível utilizar este comando!")
-
-v = 0
-# Função que envia os valores do gamepad a placa
-async def send_gamepad_values():
-    global conectado
-    global is_on
-    global programOpen
-    global v
-    while conectado:  # Verifica se placa está conectada (Loop só fecha quando a janela principal fecha)
-        while estado_gamepad:  # Verifica se a o estado do botão está em enable/disable
-            try:
-                data = gamepad.getgamepadvalues()  # Retorna os valores do gamepad (já codificado)
-                data["EN"] = not is_on
-                if not is_on:
-                    v = 1
-                    await arara.sendvalues(data)  # Envia os valores para a placa
-                if is_on and v == 1:
-                    v = 0
-                    await arara.sendvalues(data)
-                await asyncio.sleep(float(current_value.get()) / 1000)  # Espera 25ms
-            except arara.return_error_closed():
-                tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
-                imagem_conected.config(image=connect_off)
-                conectado = False
-                is_on = True
-                programOpen = 0
-                button_enable.config(image=off)
-                break
-            except websockets.exceptions.ConnectionClosedOK:
-                tkinter.messagebox.showerror("Arara Error", "Verifique sua conexão Wi-Fi!")
-                imagem_conected.config(image=connect_off)
-                conectado = False
-                is_on = True
-                programOpen = 0
-                button_enable.config(image=off)
-                break
-        await asyncio.sleep(1)
+        tkinter.messagebox.showerror("EasySTEAM", "Não é possível utilizar este comando!")
 
 
 def handler():
     runner.run(send_gamepad_values())
+
+
+async def send_gamepad_values():
+    global is_on
+    while easyBoard.connection:  # Verifica se placa está conectada (Loop só fecha quando a janela principal fecha)
+        while gamepad.geteventgamepad():  # Verifica se a o estado do botão está em enable/disable
+            try:
+                data = gamepad.getgamepadvalues()  
+                data["EN"] = not is_on
+                await easyBoard.sendvalues(data)
+            except:
+                imagem_conected.config(image=connect_off)
+                is_on = True
+                button_enable.config(image=off)
+                easyBoard.wifierror()
+                break
+        await asyncio.sleep(1)
+
+
+# Função que lança o toggle e inicia a enviar os valores do gamepad
+def toggle():
+    if easyBoard.getconnection():
+        switch()
+    else:
+        tkinter.messagebox.showerror("EasySTEAM Error", "Não é possivel utilizar esse comando")
 
 
 # Função toggle que define o estado do botão Enable/Disable
@@ -242,26 +203,16 @@ def switch():
         try:
             button_enable.config(image=on)
             is_on = False
-        except arara.return_error_closed():
+        except easysteam.return_error_closed():
             tkinter.messagebox.showerror(constants.AraraError.TITLE,
                                          constants.AraraError.MESSAGE_WIFI_DISCONNECT)
     else:
         try:
             button_enable.config(image=off)
             is_on = True
-        except arara.return_error_closed():
+        except easysteam.return_error_closed():
             tkinter.messagebox.showerror(constants.AraraError.TITLE,
                                          constants.AraraError.MESSAGE_WIFI_DISCONNECT)
-
-
-# Função que lança o toggle e inicia a enviar os valores do gamepad
-def toggle():
-    global programOpen
-    if conectado:
-        switch()
-    else:
-        tkinter.messagebox.showerror("Arara Error", "Não é possivel utilizar esse comando")
-
 
 # Função que fecha o dashboard
 def close_dashboard():
@@ -274,12 +225,11 @@ def close_dashboard():
 
 # Função que desconecta e define as variáveis para fechar o programa
 async def quit_tk():
-    global conectado
     global is_on
     is_on = True
-    if conectado:
-        conectado = False
-        await arara.disconnect_wifi()
+    if easyBoard.connection:
+        await easyBoard.disconnect()
+        is_on = False
 
 
 # Janela principal
@@ -345,14 +295,6 @@ button_enable = tk.Button(root, image=off, command=toggle,
                           highlightthickness=constants.ButtonEnable.HIGHTLIGHTTHICKNESS,
                           bg=constants.ButtonEnable.BACKGROUND, borderwidth=constants.ButtonConnect.BORDER_WIDTH)
 
-current_value = tk.StringVar(value=str(25))
-spin_box = tk.Spinbox(
-    root,
-    from_=25,
-    to=200,
-    textvariable=current_value,
-    wrap=True)
-spin_box.place(x=50, y=50)
 thread_gamepad = threading.Thread(target=gamepad_events, daemon=True)
 thread_gamepad.start()
 # Loop do tkinter e tk-async
